@@ -472,13 +472,10 @@
 
     const announcements = database.announcements.items;
     const activities = database.activities.items;
-    const announcementSources = [
-      ...announcements,
-      ...activities.filter((item) => item.upcoming),
-    ];
+    const announcementSources = [...announcements];
     const newsSources = [
       announcements[0],
-      announcements[1],
+      ...database.news.items,
       activities.find((item) => item.titleEn.includes("WorldQuant BRAIN")),
     ].filter(Boolean);
 
@@ -1432,7 +1429,7 @@
       <section class="section">
         ${renderSectionHeading(page.activityTitle, page.activityTitle, page.activityCopy)}
         <div class="activity-grid activity-grid-featured">
-          ${activityItems.slice(0, 3).map((item, index) => renderFeaturedActivityCard(item, index)).join("")}
+          ${activityItems.slice(0, 6).map((item, index) => renderFeaturedActivityCard(item, index)).join("")}
         </div>
         ${renderHomeArchiveLink("activities.html", state.lang === "th" ? "ดูกิจกรรมทั้งหมด" : "View all activities")}
       </section>

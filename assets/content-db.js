@@ -273,12 +273,16 @@ window.TQF_DB = {
         locationTh: "มหาวิทยาลัยธรรมศาสตร์ ศูนย์รังสิต",
         locationEn: "Thammasat University, Rangsit Campus",
       },
+    ],
+  },
+  news: {
+    items: [
       {
         date: "2026-01-01",
         href: "https://www.cmdf.or.th/th/announcement-dynamic/global-financial-certifications-scholarship",
         imageSrc: "assets/partner-cqf.svg",
-        categoryTh: "ทุนพัฒนาวิชาชีพ",
-        categoryEn: "Professional Certification Grant",
+        categoryTh: "ข่าวทุนพัฒนาวิชาชีพ",
+        categoryEn: "Professional Certification News",
         titleTh:
           "CMDF เปิดรับทุนสนับสนุน Global Financial Certifications สำหรับบุคลากรตลาดทุน",
         titleEn:
