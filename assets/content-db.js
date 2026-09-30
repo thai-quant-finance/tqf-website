@@ -86,6 +86,18 @@ window.TQF_DB = {
       },
     ],
     dropdowns: {
+      activities: {
+        th: [
+          { href: "activities.html", label: "กิจกรรมทั้งหมด", slug: "activities" },
+          { href: "announcements.html", label: "ประกาศทั้งหมด", slug: "announcements" },
+          { href: "news.html", label: "ข่าวทั้งหมด", slug: "news" },
+        ],
+        en: [
+          { href: "activities.html", label: "All Activities", slug: "activities" },
+          { href: "announcements.html", label: "All Announcements", slug: "announcements" },
+          { href: "news.html", label: "All News", slug: "news" },
+        ],
+      },
       collaborators: {
         th: [
           { href: "collaborators.html#facebook", label: "เพจเฟซบุ๊ก" },

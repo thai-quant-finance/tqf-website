@@ -1186,8 +1186,13 @@
     const academicNav = navBySlug.academic;
     const associationNav = [navBySlug.about, navBySlug.team, navBySlug.bylaws].filter(Boolean);
     const associationActive = associationNav.some((item) => item.slug === slug);
+    const activitiesActive = ["activities", "announcements", "news"].includes(slug);
     const academicActive = ["academic", "academic-committee-board", "academic-conference", "journal", "magazine", "articles", "book-series"].includes(slug);
     const careerActive = ["quant-pathway", "quant-jobs", "job-directory", "training"].includes(slug);
+    const activityChildren = database.navigation.dropdowns.activities[state.lang].map((item) => ({
+      ...item,
+      active: item.slug === slug,
+    }));
     const collaboratorChildren = database.navigation.dropdowns.collaborators[state.lang];
     const academicChildren = database.navigation.dropdowns.academic[state.lang];
     const careerChildren = database.navigation.dropdowns.career[state.lang].map((item) => ({
@@ -1249,7 +1254,31 @@
               `
               : ""
           }
-          ${activitiesNav ? `<a class="nav-link ${activitiesNav.slug === slug ? "is-active" : ""}" href="${activitiesNav.href}">${escapeHtml(state.lang === "th" ? activitiesNav.labelTh : activitiesNav.labelEn)}</a>` : ""}
+          ${
+            activitiesNav
+              ? `
+                <div class="nav-dropdown">
+                  <details class="nav-dropdown-panel">
+                    <summary class="nav-link nav-summary ${activitiesActive ? "is-active" : ""}">
+                      <span>${escapeHtml(state.lang === "th" ? activitiesNav.labelTh : activitiesNav.labelEn)}</span>
+                      <span class="nav-caret" aria-hidden="true"></span>
+                    </summary>
+                    <div class="dropdown-menu">
+                      ${activityChildren
+                        .map(
+                          (item) => `
+                            <a class="dropdown-link ${item.active ? "is-active" : ""}" href="${item.href}">
+                              ${escapeHtml(item.label)}
+                            </a>
+                          `,
+                        )
+                        .join("")}
+                    </div>
+                  </details>
+                </div>
+              `
+              : ""
+          }
           <div class="nav-dropdown">
             <details class="nav-dropdown-panel">
               <summary class="nav-link nav-summary ${careerActive ? "is-active" : ""}">
