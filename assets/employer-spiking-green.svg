@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 96" role="img" aria-labelledby="title">
+  <title id="title">Spiking Green</title>
+  <rect width="360" height="96" fill="#ffffff"/>
+  <path d="M30 64 48 45l14 10 21-27" fill="none" stroke="#17745b" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="100" y="57" font-family="Arial, sans-serif" font-size="27" font-weight="700" fill="#17382f">SPIKING GREEN</text>
+</svg>

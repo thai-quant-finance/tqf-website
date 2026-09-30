@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 96" role="img" aria-labelledby="title">
+  <title id="title">KASIKORNBANK</title>
+  <rect width="320" height="96" rx="8" fill="#fff"/>
+  <circle cx="48" cy="48" r="27" fill="#13834b"/>
+  <path d="M34 31v34m0-17 24-17M34 48l24 17" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round"/>
+  <text x="89" y="57" fill="#13834b" font-family="Arial, sans-serif" font-size="25" font-weight="700">KASIKORNBANK</text>
+</svg>

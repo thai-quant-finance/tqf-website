@@ -1,13 +1,15 @@
 ﻿(function () {
   const source = window.TQF_CONTENT;
+  const database = window.TQF_DB;
 
-  if (!source) {
+  if (!source || !database) {
     return;
   }
 
   const slug = document.body.dataset.page || "home";
   const pageKeyMap = {
     "quant-pathway": "quantPathway",
+    "job-directory": "jobDirectory",
     "academic-committee-board": "academicCommitteeBoard",
     "academic-conference": "academicConference",
     "quant-jobs": "quantJobs",
@@ -23,340 +25,88 @@
   const root = document.getElementById("page-root");
   const headerRoot = document.getElementById("site-header");
   const footerRoot = document.getElementById("site-footer");
-  const navItems = [
-    ...source.navigation,
-    {
-      slug: "activities",
-      labelTh: "กิจกรรม",
-      labelEn: "Activities",
-      href: "activities.html",
-    },
-    {
-      slug: "collaborators",
-      labelTh: "เครือข่ายความร่วมมือ",
-      labelEn: "Collaborators",
-      href: "collaborators.html",
-    },
-    {
-      slug: "academic",
-      labelTh: "วิชาการ",
-      labelEn: "Academic",
-      href: "academic.html",
-    },
-    {
-      slug: "quant-jobs",
-      labelTh: "งานด้าน Quant",
-      labelEn: "Quant Jobs",
-      href: "quant-jobs.html",
-    },
-    {
-      slug: "training",
-      labelTh: "การอบรม",
-      labelEn: "Training",
-      href: "training.html",
-    },
-  ];
+  const navItems = database.navigation.primary;
   const quantModules = [
     ...source.pages.quantPathway.foundational,
     ...source.pages.quantPathway.core,
     ...source.pages.quantPathway.specialized,
   ];
   const totalTopics = quantModules.reduce((sum, module) => sum + module.items.length, 0);
-  const bookSeriesCatalog = {
-    th: [
-      {
-        kicker: "เล่มที่ 1",
-        title: "TQF Quant Pathway Handbook",
-        description:
-          "คู่มือฉบับเต็มที่สรุปโครงสร้างองค์ความรู้จากหน้า Quant Pathway ของ TQF ครอบคลุมพื้นฐาน แก่นหลัก และหัวข้อเฉพาะทางสำหรับผู้สนใจสายควอนท์",
-        coverSrc: "assets/book-quant-pathway-handbook-cover.svg",
-        downloadHref: "assets/tqf-quant-pathway-handbook.pdf",
-        onlineHref: "quant-pathway.html",
-        sourceHref: "https://www.tqf.or.th/quant-pathway",
-        format: "PDF",
-      },
-      {
-        kicker: "เล่มที่ 2",
-        title: "TQF Quant Pathway Study Checklist",
-        description:
-          "ฉบับสรุปสำหรับทบทวนหัวข้อการเรียนรู้แบบกระชับ ใช้เป็นรายการตรวจสอบการอ่านและการวางแผนพัฒนาทักษะจากกรอบ Quant Pathway",
-        coverSrc: "assets/book-quant-pathway-checklist-cover.svg",
-        downloadHref: "assets/tqf-quant-pathway-checklist.pdf",
-        onlineHref: "quant-pathway.html",
-        sourceHref: "https://www.tqf.or.th/quant-pathway",
-        format: "PDF",
-      },
-    ],
-    en: [
-      {
-        kicker: "Volume 1",
-        title: "TQF Quant Pathway Handbook",
-        description:
-          "A full handbook version of the TQF Quant Pathway, covering foundational, core, and specialized knowledge areas for aspiring quant professionals.",
-        coverSrc: "assets/book-quant-pathway-handbook-cover.svg",
-        downloadHref: "assets/tqf-quant-pathway-handbook.pdf",
-        onlineHref: "quant-pathway.html",
-        sourceHref: "https://www.tqf.or.th/quant-pathway",
-        format: "PDF",
-      },
-      {
-        kicker: "Volume 2",
-        title: "TQF Quant Pathway Study Checklist",
-        description:
-          "A concise study checklist edition for reviewing topic coverage and planning skill development from the TQF Quant Pathway framework.",
-        coverSrc: "assets/book-quant-pathway-checklist-cover.svg",
-        downloadHref: "assets/tqf-quant-pathway-checklist.pdf",
-        onlineHref: "quant-pathway.html",
-        sourceHref: "https://www.tqf.or.th/quant-pathway",
-        format: "PDF",
-      },
-    ],
-  };
-  const articleCatalog = {
-    th: [
-      {
-        id: "cqf-quant-history",
-        kicker: "พันธมิตร 01",
-        title: "Quantitative Finance: ความหมายและพัฒนาการ",
-        summary:
-          "เรียบเรียงจากบทความต้นฉบับของ CQF ที่อธิบายทั้งนิยามของ quantitative finance พัฒนาการทางประวัติศาสตร์ และบทบาทของเทคโนโลยีต่อสายงานควอนท์",
-        imageSrc: "assets/partner-cqf.svg",
-        sourceLabel: "CQF Blog",
-        sourceHref: "https://www.cqf.com/blog/what-quantitative-finance-brief-history",
-        paragraphs: [
-          "บทความของ CQF อธิบายว่า quantitative finance เป็นสาขาหนึ่งของการลงทุนที่ใช้วิธีทางคณิตศาสตร์และสถิติเพื่อวิเคราะห์โอกาสการลงทุนในสินทรัพย์หลายประเภท ตั้งแต่หุ้น ตราสารหนี้ ไปจนถึงอนุพันธ์และการบริหารความเสี่ยง",
-          "เนื้อหาส่วนประวัติศาสตร์วางรากย้อนกลับไปถึงแนวคิดอย่าง Brownian motion, random walk, งานของ Louis Bachelier และการพัฒนาต่อมาในศตวรรษที่ 20 เช่น Modern Portfolio Theory, Efficient Market Hypothesis และการเติบโตของแบบจำลองอนุพันธ์",
-          "บทความยังชี้ให้เห็นว่าความเป็นควอนท์ยุคใหม่ไม่ได้จำกัดอยู่ที่แบบจำลองเชิงทฤษฎี แต่ผสานกับ electronic trading, machine learning และ alternative data ทำให้การศึกษาต่อเนื่องและทักษะเชิงเทคนิคยังเป็นแกนสำคัญของวิชาชีพนี้",
-        ],
-        bullets: [
-          "นิยามของ quantitative finance และขอบเขตงานควอนท์",
-          "ลำดับพัฒนาการตั้งแต่ Bachelier ถึงยุค machine learning",
-          "บทบาทของเทคโนโลยีและการพัฒนาทักษะต่อเนื่อง",
-        ],
-      },
-      {
-        id: "cfa-model-risk",
-        kicker: "พันธมิตร 02",
-        title: "Backtests, Causality และ Model Risk ในการลงทุนเชิงปริมาณ",
-        summary:
-          "สรุปจากบทความต้นฉบับของ CFA Institute ที่เสนอว่าการประเมินกลยุทธ์เชิงควอนท์ไม่ควรหยุดที่ผล backtest แต่ต้องถามต่อว่ากลไกของโมเดลทำงานอย่างไรและมีความเสี่ยงเชิงโครงสร้างตรงไหน",
-        imageSrc: "assets/partner-cfa.svg",
-        sourceLabel: "CFA Institute Enterprising Investor",
-        sourceHref:
-          "https://rpc.cfainstitute.org/blogs/enterprising-investor/2026/backtests-causality-and-model-risk-in-quantitative-investing",
-        paragraphs: [
-          "บทความของ CFA Institute ตั้งต้นจากคำถามสำคัญของนักลงทุนเชิงระบบว่า เราควรให้น้ำหนักกับผล backtest มากเพียงใด ผู้เขียนเสนอว่าการดูแค่ความสัมพันธ์ในอดีตยังไม่เพียงพอ หากไม่เข้าใจเหตุผลเชิงกลไกของโมเดล",
-          "ใจความหลักคือการแยกความต่างระหว่าง association กับ explanation โดยยอมรับว่าสัญญาณเชิงความสัมพันธ์ยังมีคุณค่าในโลกจริง แต่ไม่ควรกลายเป็นจุดหยุดของกระบวนการวิจัย โดยเฉพาะเมื่อมีความรู้เชิงโครงสร้างที่สามารถนำมา model ได้ดีกว่า",
-          "บทความใช้แนวคิดจากการระบาดวิทยาเป็นภาพเปรียบเทียบว่า หากระบบมีโครงสร้างที่เข้าใจได้ เช่น leverage, forced selling, default channel หรือ network transmission ความรู้เหล่านี้ควรถูกทำให้ explicit ในโมเดล ไม่ใช่ถูกลดทอนเหลือเพียงสถิติสหสัมพันธ์",
-        ],
-        bullets: [
-          "backtest ไม่ใช่คำตอบสุดท้ายของ model validation",
-          "ต้องแยก association ออกจาก causal mechanism",
-          "model risk ลดลงได้เมื่อเข้าใจโครงสร้างตลาดมากขึ้น",
-        ],
-      },
-      {
-        id: "wqu-student-spotlight",
-        kicker: "พันธมิตร 03",
-        title: "เส้นทางนักศึกษา Financial Engineering สู่การทำงานระดับนานาชาติ",
-        summary:
-          "เรียบเรียงจากบทความ Student Spotlight ของ WorldQuant University ที่เล่าการพัฒนาทักษะด้าน finance, data science และ quantitative analysis ผ่านหลักสูตร MSc in Financial Engineering",
-        imageSrc: "assets/partner-wqu.svg",
-        sourceLabel: "WorldQuant University News",
-        sourceHref: "https://www.wqu.edu/student-spotlight-delara",
-        paragraphs: [
-          "บทความจาก WorldQuant University เล่าเรื่องของ Josephine de Lara ซึ่งย้ายจากฟิลิปปินส์ไปทำงานที่จีนและเลือกเรียนต่อใน MSc in Financial Engineering เพื่อเสริมเส้นทางอาชีพในโลกการเงินและงานข้อมูล",
-          "จุดเด่นของบทความไม่ใช่เพียงการแนะนำหลักสูตร แต่สะท้อนว่าโปรแกรมด้าน financial engineering แบบออนไลน์สามารถช่วยคนทำงานพัฒนาทักษะด้าน finance, data science และ quantitative analysis ไปพร้อมกับงานประจำได้",
-          "สำหรับผู้อ่านของสมาคม บทความนี้มีคุณค่าในฐานะตัวอย่างเส้นทางการพัฒนาคนรุ่นใหม่ในสายควอนท์ โดยเชื่อมเรื่อง career mobility, global exposure และการเรียนรู้เชิงเทคนิคเข้าด้วยกันอย่างเป็นรูปธรรม",
-        ],
-        bullets: [
-          "บทบาทของการศึกษา FE ต่อ career transition",
-          "การผสาน finance, data science และ quantitative analysis",
-          "ตัวอย่างการเติบโตในสายอาชีพควอนท์ระดับนานาชาติ",
-        ],
-      },
-    ],
-    en: [
-      {
-        id: "cqf-quant-history",
-        kicker: "Partner Article 01",
-        title: "Quantitative Finance: Definition and History",
-        summary:
-          "A CQF original article explaining what quantitative finance is, how the field developed historically, and why modern quant work now depends heavily on technology and continued learning.",
-        imageSrc: "assets/partner-cqf.svg",
-        sourceLabel: "CQF Blog",
-        sourceHref: "https://www.cqf.com/blog/what-quantitative-finance-brief-history",
-        paragraphs: [
-          "CQF’s article defines quantitative finance as the use of mathematical and statistical methods to analyze investment opportunities across asset classes, including equities, fixed income, structured products, commodities, foreign exchange, and derivatives.",
-          "The piece traces the field from early ideas such as Brownian motion and random walk theory through Bachelier’s option work, Modern Portfolio Theory, the Efficient Market Hypothesis, and the growth of derivatives modeling in the late twentieth century.",
-          "It also argues that modern quant practice is inseparable from technology, highlighting the rise of electronic trading, machine learning, and alternative data. That framing makes the article useful as both an introduction and a professional orientation piece.",
-        ],
-        bullets: [
-          "Defines the scope of quantitative finance",
-          "Connects key historical milestones across the field",
-          "Shows why modern quant work is deeply technology-driven",
-        ],
-      },
-      {
-        id: "cfa-model-risk",
-        kicker: "Partner Article 02",
-        title: "Backtests, Causality, and Model Risk in Quantitative Investing",
-        summary:
-          "A CFA Institute original article arguing that quantitative investing should move beyond simple backtest acceptance and ask whether the model’s mechanism is actually understood.",
-        imageSrc: "assets/partner-cfa.svg",
-        sourceLabel: "CFA Institute Enterprising Investor",
-        sourceHref:
-          "https://rpc.cfainstitute.org/blogs/enterprising-investor/2026/backtests-causality-and-model-risk-in-quantitative-investing",
-        paragraphs: [
-          "The CFA Institute article starts from a central question in systematic investing: how much confidence should investors place in historical backtests. It argues that past fit alone is not enough if the structure behind a model is poorly understood.",
-          "Its core distinction is between association and explanation. Associational signals can still be useful under uncertainty, but they should not become the end point of research when stronger structural knowledge is available.",
-          "The article uses epidemiology as an analogy for structured reasoning: when there are identifiable mechanisms, they should be modeled explicitly. In finance, that includes channels such as leverage, forced selling, refinancing pressure, passive flows, and network transmission.",
-        ],
-        bullets: [
-          "Backtests are not enough on their own",
-          "Causal reasoning matters in model design and validation",
-          "Structural market mechanisms should be represented explicitly",
-        ],
-      },
-      {
-        id: "wqu-student-spotlight",
-        kicker: "Partner Article 03",
-        title: "A Financial Engineering Student’s International Career Path",
-        summary:
-          "A WorldQuant University original spotlight article showing how a student uses the MSc in Financial Engineering to build finance, data science, and quantitative analysis capability while working internationally.",
-        imageSrc: "assets/partner-wqu.svg",
-        sourceLabel: "WorldQuant University News",
-        sourceHref: "https://www.wqu.edu/student-spotlight-delara",
-        paragraphs: [
-          "WorldQuant University’s student spotlight follows Josephine de Lara, who moved from the Philippines to China and chose the MSc in Financial Engineering as a way to support long-term career development in finance and data-driven work.",
-          "The article emphasizes that flexible program design can help working professionals build finance, data science, and quantitative analysis skills without stepping away from employment. That makes the piece useful as a career-development example rather than only a student profile.",
-          "For readers of the association website, the article shows a practical pathway into the quant field through structured education, international exposure, and technical upskilling. It is especially relevant for younger professionals considering applied postgraduate training.",
-        ],
-        bullets: [
-          "Shows education as a bridge into quant careers",
-          "Combines finance, data science, and quantitative analysis",
-          "Highlights global mobility and professional development",
-        ],
-      },
-    ],
-  };
-  const journalShowcase = {
-    th: [
-      {
-        kicker: "ฉบับแนะนำ",
-        title: "บทสรุปกรอบ Quant Pathway",
-        description:
-          "บทสรุปเชิงวารสารที่เรียบเรียงจากโครงสร้าง Quant Pathway เพื่อใช้เป็นมุมมองเชิงกรอบวิชาการสำหรับการพัฒนาทักษะสายควอนท์",
-        coverSrc: "assets/journal-quant-pathway-cover.svg",
-        primaryHref: "articles.html#quant-pathway-framework",
-        primaryLabel: "อ่านบทความ",
-        secondaryHref: "assets/tqf-quant-pathway-handbook.pdf",
-        secondaryLabel: "เปิดคู่มือ PDF",
-        sourceHref: "https://www.tqf.or.th/quant-pathway",
-        sourceLabel: "TQF Quant Pathway",
-      },
-      {
-        kicker: "ฉบับวิเคราะห์",
-        title: "บทวิเคราะห์มาตรฐานวิชาชีพของ TQF",
-        description:
-          "บทวิเคราะห์ด้านมาตรฐานวิชาชีพและคุณค่าของสมาชิก เรียบเรียงจากข้อบังคับสมาคมและสิทธิประโยชน์ของสมาชิก",
-        coverSrc: "assets/journal-standards-cover.svg",
-        primaryHref: "articles.html#professional-standards",
-        primaryLabel: "อ่านบทความ",
-        secondaryHref: "bylaws.html",
-        secondaryLabel: "ดูข้อบังคับ",
-        sourceHref: "https://www.tqf.or.th/bylaws",
-        sourceLabel: "TQF Bylaws",
-      },
-    ],
-    en: [
-      {
-        kicker: "Featured Issue",
-        title: "Journal Brief: Quant Pathway Framework",
-        description:
-          "A journal-style brief derived from the Quant Pathway structure, presented as an academic framework for quant skill development.",
-        coverSrc: "assets/journal-quant-pathway-cover.svg",
-        primaryHref: "articles.html#quant-pathway-framework",
-        primaryLabel: "Read article",
-        secondaryHref: "assets/tqf-quant-pathway-handbook.pdf",
-        secondaryLabel: "Open PDF handbook",
-        sourceHref: "https://www.tqf.or.th/quant-pathway",
-        sourceLabel: "TQF Quant Pathway",
-      },
-      {
-        kicker: "Analytical Note",
-        title: "Journal Brief: Professional Standards in TQF",
-        description:
-          "An analytical note on professional standards and member value, based on the association bylaws and member benefits.",
-        coverSrc: "assets/journal-standards-cover.svg",
-        primaryHref: "articles.html#professional-standards",
-        primaryLabel: "Read article",
-        secondaryHref: "bylaws.html",
-        secondaryLabel: "View bylaws",
-        sourceHref: "https://www.tqf.or.th/bylaws",
-        sourceLabel: "TQF Bylaws",
-      },
-    ],
-  };
-  const magazineShowcase = {
-    th: [
-      {
-        kicker: "ฉบับกิจกรรม",
-        title: "เรื่องเด่นกิจกรรมของสมาคม",
-        description:
-          "สรุปข่าวสารและกิจกรรมเด่นของสมาคมในรูปแบบแมกกาซีนที่อ่านง่าย เชื่อมโยงกับรายการกิจกรรมบนเว็บไซต์",
-        coverSrc: "assets/magazine-activity-cover.svg",
-        primaryHref: "activities.html",
-        primaryLabel: "ดูกิจกรรม",
-        secondaryHref: "index.html",
-        secondaryLabel: "กลับหน้าหลัก",
-        sourceHref: "https://www.facebook.com/quantcornerthailand",
-        sourceLabel: "Quant Corner Thailand",
-      },
-      {
-        kicker: "ฉบับความรู้",
-        title: "เส้นทางอาชีพและการเรียนรู้สายควอนท์",
-        description:
-          "เนื้อหาสรุปสายอาชีพ ทักษะ และการเรียนรู้สำหรับผู้สนใจสายควอนท์ในรูปแบบที่เข้าถึงง่ายกว่าวารสาร",
-        coverSrc: "assets/magazine-career-cover.svg",
-        primaryHref: "quant-pathway.html",
-        primaryLabel: "ดู Quant Pathway",
-        secondaryHref: "quant-jobs.html",
-        secondaryLabel: "ดูงานด้าน Quant",
-        sourceHref: "https://www.tqf.or.th/quant-pathway",
-        sourceLabel: "TQF Quant Pathway",
-      },
-    ],
-    en: [
-      {
-        kicker: "Activity Issue",
-        title: "Magazine Feature: Activity Highlights",
-        description:
-          "An accessible magazine-style highlight of association news and public activities, linked to the site’s activity archive.",
-        coverSrc: "assets/magazine-activity-cover.svg",
-        primaryHref: "activities.html",
-        primaryLabel: "View activities",
-        secondaryHref: "index.html",
-        secondaryLabel: "Back to home",
-        sourceHref: "https://www.facebook.com/quantcornerthailand",
-        sourceLabel: "Quant Corner Thailand",
-      },
-      {
-        kicker: "Knowledge Issue",
-        title: "Magazine Feature: Quant Career and Learning",
-        description:
-          "A reader-friendly issue focused on career paths, skills, and learning directions for people entering the quant field.",
-        coverSrc: "assets/magazine-career-cover.svg",
-        primaryHref: "quant-pathway.html",
-        primaryLabel: "View Quant Pathway",
-        secondaryHref: "quant-jobs.html",
-        secondaryLabel: "View Quant Jobs",
-        sourceHref: "https://www.tqf.or.th/quant-pathway",
-        sourceLabel: "TQF Quant Pathway",
-      },
-    ],
-  };
+  const bookSeriesCatalog = database.publications.bookSeries;
+  const articleCatalog = database.articles.items;
+  const journalShowcase = database.publications.journalShowcase;
+  const magazineShowcase = database.publications.magazineShowcase;
   const heroImagePlaceholder = "assets/hero.jpg";
+  const fallbackJobSkills = {
+    "Financial Engineer": [
+      ["แบบจำลองทางการเงิน", "Financial Modeling", "navy"],
+      ["วิธีมอนติคาร์โล", "Monte Carlo Methods", "gold"],
+      ["การกำหนดราคาอนุพันธ์", "Derivatives Pricing", "teal"],
+      ["การเขียนโปรแกรมเชิงปริมาณ", "Quantitative Programming", "blue"],
+      ["ปัญญาประดิษฐ์และการเรียนรู้ของเครื่อง", "AI & Machine Learning", "slate"],
+    ],
+    "Quantitative Researcher - Option": [
+      ["การกำหนดราคาออปชัน", "Options Pricing", "navy"],
+      ["แบบจำลองความผันผวน", "Volatility Modeling", "gold"],
+      ["โครงสร้างจุลภาคของตลาด", "Market Microstructure", "teal"],
+      ["วิธีมอนติคาร์โล", "Monte Carlo Methods", "blue"],
+      ["การบริหารความเสี่ยง", "Risk Management", "slate"],
+      ["Python", "Python", "navy"],
+    ],
+    "Pioneer Talent Program - Product Manager, Quant Trading": [
+      ["ระบบซื้อขาย", "Trading Systems", "navy"],
+      ["แบบจำลองราคา", "Pricing Models", "gold"],
+      ["ระบบบริหารความเสี่ยง", "Risk Engines", "teal"],
+      ["กลไกสมุดคำสั่งซื้อขาย", "Order Book Mechanics", "blue"],
+      ["SQL และ Python", "SQL & Python", "slate"],
+    ],
+    "Senior Product Manager, Quant Trading": [
+      ["ผลิตภัณฑ์อนุพันธ์", "Derivatives Products", "navy"],
+      ["ตรรกะการซื้อขาย", "Trading Logic", "gold"],
+      ["การบริหารความเสี่ยง", "Risk Management", "teal"],
+      ["แบบจำลองราคา", "Pricing Models", "blue"],
+      ["การออกแบบผลิตภัณฑ์เชิงปริมาณ", "Quantitative Product Design", "slate"],
+    ],
+  };
+
+  const jobCategoryOrder = [
+    "Risk Management",
+    "Quant Researcher",
+    "Quant Trader",
+    "Quant Developer",
+    "Financial Engineer",
+    "Quantitative Analyst",
+  ];
+
+  const jobCategoryLabels = {
+    th: {
+      "Risk Management": "การบริหารความเสี่ยง",
+      "Quant Researcher": "นักวิจัยเชิงปริมาณ",
+      "Quant Trader": "นักค้าหลักทรัพย์เชิงปริมาณ",
+      "Quant Developer": "นักพัฒนาระบบควอนท์",
+      "Financial Engineer": "วิศวกรการเงิน",
+      "Quantitative Analyst": "นักวิเคราะห์เชิงปริมาณ",
+    },
+    en: Object.fromEntries(jobCategoryOrder.map((category) => [category, category])),
+  };
+
+  const jobMarketOrder = ["TH", "SG", "VN", "HK", "MY"];
+  const jobMarketLabels = {
+    th: {
+      TH: "ประเทศไทย",
+      SG: "สิงคโปร์",
+      VN: "เวียดนาม",
+      HK: "ฮ่องกง",
+      MY: "มาเลเซีย",
+    },
+    en: {
+      TH: "Thailand",
+      SG: "Singapore",
+      VN: "Vietnam",
+      HK: "Hong Kong",
+      MY: "Malaysia",
+    },
+  };
 
   const ui = {
     th: {
@@ -472,123 +222,236 @@
   };
 
   const content = buildContent();
-  render();
+  initialize();
+
+  async function initialize() {
+    if (["quant-jobs", "job-directory"].includes(slug)) {
+      await loadJobsCsv();
+    }
+
+    render();
+  }
+
+  async function loadJobsCsv() {
+    try {
+      let jobRows;
+      let employerRows;
+      let skillRows;
+      let jobsSource = "csv";
+      const embeddedDatabase = window.TQF_JOBS_DB;
+
+      if (window.location.protocol === "file:" && embeddedDatabase) {
+        jobRows = embeddedDatabase.jobs;
+        employerRows = embeddedDatabase.employers;
+        skillRows = embeddedDatabase.skills;
+        jobsSource = "browser-database";
+      } else try {
+        const [response, employerResponse, skillResponse] = await Promise.all([
+          fetch("data/jobs.csv", { cache: "no-store" }),
+          fetch("data/job-employers.csv", { cache: "no-store" }),
+          fetch("data/job-skills.csv", { cache: "no-store" }),
+        ]);
+
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        if (!employerResponse.ok) throw new Error(`Employer database HTTP ${employerResponse.status}`);
+        if (!skillResponse.ok) throw new Error(`Skill database HTTP ${skillResponse.status}`);
+
+        jobRows = parseCsv(await response.text());
+        employerRows = parseCsv(await employerResponse.text());
+        skillRows = parseCsv(await skillResponse.text());
+      } catch (fetchError) {
+        if (!embeddedDatabase) throw fetchError;
+
+        jobRows = embeddedDatabase.jobs;
+        employerRows = embeddedDatabase.employers;
+        skillRows = embeddedDatabase.skills;
+        jobsSource = "browser-database";
+      }
+
+      const rows = jobRows
+        .filter(isCurrentJob)
+        .sort((left, right) => {
+          const leftDate = left.published_date || left.last_verified || "";
+          const rightDate = right.published_date || right.last_verified || "";
+          const dateOrder = String(rightDate).localeCompare(leftDate);
+          return dateOrder || Number(left.sort_order || 0) - Number(right.sort_order || 0);
+        });
+      const employers = new Map(
+        employerRows.map((employer) => [employer.employer_key, employer]),
+      );
+      const skillsByJob = skillRows
+        .sort((left, right) => Number(left.sort_order || 0) - Number(right.sort_order || 0))
+        .reduce((groups, skill) => {
+          if (!groups.has(skill.job_id)) groups.set(skill.job_id, []);
+          groups.get(skill.job_id).push(skill);
+          return groups;
+        }, new Map());
+
+      if (!rows.length) {
+        throw new Error("No active job records found");
+      }
+
+      content.quantJobs.th.listings = rows.map((row) => mapJobRecord(row, "th", employers, skillsByJob));
+      content.quantJobs.en.listings = rows.map((row) => mapJobRecord(row, "en", employers, skillsByJob));
+      document.body.dataset.jobsSource = jobsSource;
+    } catch (error) {
+      ["th", "en"].forEach((lang) => {
+        content.quantJobs[lang].listings = content.quantJobs[lang].listings.map((item) => ({
+          ...item,
+          publishedDate: item.publishedDate || "2026-09-30",
+          publishedDateKind: item.publishedDate ? "published" : "verified",
+          skills: (fallbackJobSkills[item.title] || []).map(([labelTh, labelEn, tone]) => ({
+            label: labelEn,
+            localizedLabel: lang === "th" ? labelTh : labelEn,
+            tone,
+          })),
+        }));
+      });
+      document.body.dataset.jobsSource = "embedded";
+      console.warn(`Unable to load data/jobs.csv; using the embedded job records. ${error.message}`);
+    }
+  }
+
+  function isCurrentJob(row) {
+    const active = String(row.active).trim().toLowerCase();
+    const today = new Date().toISOString().slice(0, 10);
+    return ["1", "true", "yes"].includes(active) && (!row.expires_date || row.expires_date >= today);
+  }
+
+  function mapJobRecord(row, lang, employers, skillsByJob) {
+    const employer = employers.get(row.employer_short);
+    const allowedTones = new Set(["navy", "gold", "teal", "blue", "slate"]);
+    const skills = skillsByJob.get(row.id) || [];
+
+    return {
+      employer: employer?.[`name_${lang}`] || row.employer,
+      employerShort: employer?.[`short_name_${lang}`] || row.employer_short || row.employer,
+      logoSrc: employer?.logo_src || row.logo_src,
+      title: row.title,
+      jobCategoryCode: row.job_category,
+      jobCategory: localizeJobCategory(row.job_category, lang),
+      team: row[`team_${lang}`] || row.team_en,
+      status: row[`status_${lang}`] || row.status_en,
+      location: row[`location_${lang}`] || row.location_en,
+      locationMarketCode: inferJobMarket(row.location_th, row.location_en),
+      employmentType: row[`employment_type_${lang}`] || row.employment_type_en,
+      publishedDate: row.published_date || row.last_verified,
+      publishedDateKind: row.published_date ? "published" : "verified",
+      summary: row[`summary_${lang}`] || row.summary_en,
+      responsibilities: splitCsvList(row[`responsibilities_${lang}`] || row.responsibilities_en),
+      qualifications: splitCsvList(row[`qualifications_${lang}`] || row.qualifications_en),
+      skills: skills.map((skill) => ({
+        label: skill.skill_en || skill[`skill_${lang}`],
+        localizedLabel: skill[`skill_${lang}`] || skill.skill_en,
+        tone: allowedTones.has(skill.tone) ? skill.tone : "navy",
+      })),
+      searchAliases: [
+        row.title,
+        row.job_category,
+        localizeJobCategory(row.job_category, lang),
+        employer?.name_th,
+        employer?.name_en,
+        employer?.short_name_th,
+        employer?.short_name_en,
+        row.team_th,
+        row.team_en,
+        row.location_th,
+        row.location_en,
+        row.employment_type_th,
+        row.employment_type_en,
+        row.summary_th,
+        row.summary_en,
+        ...skills.flatMap((skill) => [skill.skill_th, skill.skill_en]),
+      ]
+        .filter(Boolean)
+        .join(" "),
+      href: row.source_url,
+    };
+  }
+
+  function localizeJobCategory(category, lang) {
+    return jobCategoryLabels[lang]?.[category] || category;
+  }
+
+  function inferJobMarket(locationTh, locationEn) {
+    const location = `${locationTh || ""} ${locationEn || ""}`.toLocaleLowerCase();
+    if (/hong kong|ฮ่องกง/.test(location)) return "HK";
+    if (/singapore|สิงคโปร์/.test(location)) return "SG";
+    if (/vietnam|เวียดนาม/.test(location)) return "VN";
+    if (/malaysia|มาเลเซีย/.test(location)) return "MY";
+    if (/thailand|ประเทศไทย|bangkok|กรุงเทพ|chatuchak|จตุจักร|sathon|สาทร|bang rak|บางรัก|pathum wan|ปทุมวัน|phaya thai|พญาไท|rat burana|ราษฎร์บูรณะ/.test(location)) return "TH";
+    return "";
+  }
+
+  function splitCsvList(value) {
+    return String(value || "")
+      .split("||")
+      .map((entry) => entry.trim())
+      .filter(Boolean);
+  }
+
+  function parseCsv(text) {
+    const records = [];
+    let record = [];
+    let field = "";
+    let quoted = false;
+
+    for (let index = 0; index < text.length; index += 1) {
+      const character = text[index];
+
+      if (character === '"') {
+        if (quoted && text[index + 1] === '"') {
+          field += '"';
+          index += 1;
+        } else {
+          quoted = !quoted;
+        }
+      } else if (character === "," && !quoted) {
+        record.push(field);
+        field = "";
+      } else if ((character === "\n" || character === "\r") && !quoted) {
+        if (character === "\r" && text[index + 1] === "\n") index += 1;
+        record.push(field);
+        if (record.some((value) => value.trim())) records.push(record);
+        record = [];
+        field = "";
+      } else {
+        field += character;
+      }
+    }
+
+    record.push(field);
+    if (record.some((value) => value.trim())) records.push(record);
+    if (!records.length) return [];
+
+    const headers = records.shift().map((header, index) =>
+      (index === 0 ? header.replace(/^\uFEFF/, "") : header).trim(),
+    );
+
+    return records.map((values) =>
+      Object.fromEntries(headers.map((header, index) => [header, (values[index] || "").trim()])),
+    );
+  }
 
   function buildContent() {
-    const teamRoleEn = {
-      นายก: "President",
-      อุปนายก: "Vice President",
-      สมาชิก: "Member",
-      "สมาชิกและเหรัญญิก": "Committee Member and Treasurer",
-      "สมาชิกและนายทะเบียน": "Committee Member and Registrar",
-    };
-    const teamMemberImagesByIndex = {
-      0: "assets/team-pat.jpg",
-      2: "assets/team-anan.jpg",
-      3: "assets/team-ronnawat.jpg",
-      4: "assets/team-pasin.jpg",
-      5: "assets/team-theerasit.jpg",
-      10: "assets/team-foosin-tight.jpg",
-    };
+    const teamRoleEn = database.team.roleEn;
+    const teamMemberImagesByIndex = database.team.memberImagesByIndex;
 
-    const missionEn = [
-      "Serve as a central network for quantitative analysts, financial engineers, and interested participants to exchange knowledge and experience.",
-      "Build a network of quantitative analysts and financial engineers both within Thailand and internationally.",
-      "Promote, develop, and strengthen professional standards for quantitative analysts and financial engineers in Thailand so they are respected locally and internationally.",
-      "Create a correct understanding of careers in quantitative analysis and financial engineering.",
-      "Encourage and support interested people to join activities that develop their capabilities and allow them to demonstrate their potential fully.",
-    ];
+    const missionEn = database.about.missionEn;
 
-    const strategyEn = [
-      "Develop and strengthen the capability of quantitative analysts, financial engineers, and interested participants in the related disciplines.",
-      "Organize activities for knowledge exchange and network-building among quantitative analysts and financial engineers.",
-      "Contribute to shaping the direction of the financial industry.",
-    ];
+    const strategyEn = database.about.strategyEn;
 
-    const quantOverviewEn = [
-      "Foundations that everyone entering the quant field should learn, regardless of specialization, because they are the base for analysis, reasoning, and future development.",
-      "Core knowledge that every quant should study, not only for their own role but to understand the wider financial industry and communicate effectively with adjacent specialists.",
-      "Specialized knowledge that quants can pursue based on their interests or intended expertise, helping both personal differentiation and industry capability-building.",
-    ];
+    const quantOverviewEn = database.quant.overviewEn;
 
-    const quantIntroEn =
-      "The TQF team developed a skills pathway for people interested in quant careers, gathering the knowledge areas worth studying and organizing them into three main levels.";
+    const quantIntroEn = database.quant.introEn;
 
-    const quantTitlesEn = [
-      "Finance",
-      "Mathematics",
-      "Programming",
-      "Advanced Mathematical Methods",
-      "Asset Behavior & Modeling",
-      "Fixed Income and Credit",
-      "Risk Management",
-      "Machine Learning & Data Science",
-      "Portfolio Management",
-      "Trading & Execution",
-      "Derivatives and Advanced Products",
-      "Credit Risk Management",
-      "Regulation & Implementation",
-    ];
+    const quantTitlesEn = database.quant.titlesEn;
 
-    const quantTitlesTh = [
-      "การเงิน",
-      "คณิตศาสตร์",
-      "การเขียนโปรแกรม",
-      "วิธีการทางคณิตศาสตร์ขั้นสูง",
-      "พฤติกรรมและแบบจำลองสินทรัพย์",
-      "ตราสารหนี้และเครดิต",
-      "การบริหารความเสี่ยง",
-      "การเรียนรู้ของเครื่องและวิทยาการข้อมูล",
-      "การจัดการพอร์ตการลงทุน",
-      "การซื้อขายและการดำเนินการซื้อขาย",
-      "อนุพันธ์และผลิตภัณฑ์ขั้นสูง",
-      "การบริหารความเสี่ยงเครดิต",
-      "กฎระเบียบและการนำไปใช้",
-    ];
+    const quantTitlesTh = database.quant.titlesTh;
 
-    const sectionTitlesEn = [
-      "Section 1 General Provisions",
-      "Section 3 Association Administration",
-      "Section 4 General Meetings",
-      "Section 5 Finance and Assets",
-      "Section 6 Amendments and Dissolution",
-      "Section 7 Miscellaneous",
-      "Section 8 Transitional Provisions",
-    ];
+    const sectionTitlesEn = database.bylaws.sectionTitlesEn;
 
-    const sectionSummariesEn = [
-      [
-        "Defines the association’s Thai and English names and the TQF abbreviation.",
-        "States the official head office in Chatuchak, Bangkok, and the core non-political objectives of the association.",
-        "Sets out membership categories, eligibility criteria, and annual fee levels for ordinary, associate, student, expert, and honorary members.",
-      ],
-      [
-        "Covers member rights, duties, resignation, termination, and the consequences of unpaid dues or misconduct.",
-        "Defines board composition, officer roles, term length, powers, and the rules for board meetings and resolutions.",
-      ],
-      [
-        "Establishes ordinary and extraordinary general meetings, including when they must be called and who can request them.",
-        "Requires annual general meetings to be held within March and meeting notices to be sent by email at least seven days in advance.",
-        "Specifies quorum and voting rules for general meetings.",
-      ],
-      [
-        "Places finances and assets under the responsibility of the board and requires funds to be kept with a stable bank in the association’s name.",
-        "Defines signature rules for checks, cash disbursement limits, bookkeeping requirements, and the role of the auditor.",
-      ],
-      [
-        "States that amendments require a two-thirds vote at a duly convened general meeting.",
-        "States that dissolution requires a three-quarters vote and that remaining assets must go to a Thai charitable-purpose juristic person.",
-      ],
-      [
-        "Provides that the general meeting resolves interpretation questions by majority vote.",
-        "Applies the Civil and Commercial Code on associations where the bylaws are silent.",
-        "Confirms that the association cannot distribute profits to individuals.",
-      ],
-      [
-        "Confirms that the bylaws take effect once the association is registered as a juristic person.",
-        "Provides that the founders become ordinary members and the initial committee starts from the registration date.",
-      ],
-    ];
+    const sectionSummariesEn = database.bylaws.sectionSummariesEn;
 
     const bylawSections = source.pages.bylaws.sections.map((section, index) => ({
       thTitle: section.title,
@@ -607,231 +470,72 @@
       items: module.items,
     }));
 
-    const activities = [
-      {
-        date: "2026-06-13",
-        href: "https://www.facebook.com/quantcornerthailand/posts/pfbid02doX219ecQiKE7ytU143ogfstQ11eiHJzfYHJNok3cSpEb2JvVxBCvuM2n3Xi5d2Bl",
-        imageSrc: "assets/hero-activities-quant.png",
-        categoryTh: "กิจกรรม",
-        categoryEn: "Event",
-        titleTh: "Weekend Vibe (Code): มาสร้าง Backtest ของตัวเองด้วย AI",
-        titleEn: "Weekend Vibe (Code): Build Your Own AI Backtest",
-        copyTh:
-          "เวิร์กช็อป 3 ชั่วโมง สำหรับใช้ AI ช่วยสร้าง backtest จากไอเดียการลงทุน จัดวันที่ 13 มิถุนายน 2026 เวลา 9:00 - 12:00 น. ที่ Starbucks ม.มหิดล พญาไท โดยลงทะเบียนผ่าน LINE OA.",
-        copyEn:
-          "A three-hour workshop on using AI to turn investment ideas into working backtests, scheduled for June 13, 2026 from 9:00 AM to 12:00 PM at Starbucks, Mahidol University Phayathai, with registration via LINE OA.",
-        timeTh: "9:00 - 12:00 น.",
-        timeEn: "9:00 AM - 12:00 PM",
-        locationTh: "Starbucks ม.มหิดล พญาไท",
-        locationEn: "Starbucks, Mahidol University Phayathai",
-      },
+    const announcements = database.announcements.items;
+    const activities = database.activities.items;
+    const announcementSources = [
+      ...announcements,
+      ...activities.filter((item) => item.upcoming),
     ];
+    const newsSources = [
+      announcements[0],
+      announcements[1],
+      activities.find((item) => item.titleEn.includes("WorldQuant BRAIN")),
+    ].filter(Boolean);
 
-    const collaboratorGroups = {
-      th: [
-        {
-          key: "facebook",
-          title: "เพจเฟซบุ๊ก",
-          description: "ช่องทางสาธารณะสำหรับติดตามข่าวสาร กิจกรรม และการสื่อสารของหน่วยงานที่เกี่ยวข้องกับสายงานควอนท์และการเงินเชิงวิชาชีพ",
-          items: [
-            {
-              name: "CFA Institute Facebook",
-              href: "https://www.facebook.com/CFAInstitute/",
-              logoSrc: "assets/partner-cfa.svg",
-              copy: "ติดตามข่าวสารด้านการศึกษา การสอบ และกิจกรรมของ CFA Institute ผ่านช่องทาง Facebook ทางการ",
-            },
-            {
-              name: "WorldQuant University Facebook",
-              href: "https://www.facebook.com/worldquantuniversity/",
-              logoSrc: "assets/partner-wqu.svg",
-              copy: "ติดตามข้อมูลหลักสูตร ข่าวประชาสัมพันธ์ และกิจกรรมจาก WorldQuant University",
-            },
-            {
-              name: "Bloomberg Facebook",
-              href: "https://www.facebook.com/bloomberg/",
-              logoSrc: "assets/partner-bloomberg.svg",
-              copy: "ติดตามข่าวสารด้านตลาดการเงิน เทคโนโลยี และข้อมูลเศรษฐกิจจาก Bloomberg",
-            },
-          ],
-        },
-        {
-          key: "institute",
-          title: "สถาบัน",
-          description: "สถาบันวิชาชีพและองค์กรด้านการรับรองความรู้ที่มีบทบาทต่อสายงาน quantitative finance และสาขาที่เกี่ยวข้อง",
-          items: [
-            {
-              name: "CQF",
-              href: "https://www.cqf.com/",
-              logoSrc: "assets/partner-cqf.svg",
-              copy: "Certificate in Quantitative Finance เป็นหลักสูตรวิชาชีพด้าน quantitative finance ระดับสากล",
-            },
-            {
-              name: "CFA Institute",
-              href: "https://www.cfainstitute.org/",
-              logoSrc: "assets/partner-cfa.svg",
-              copy: "องค์กรวิชาชีพด้านการลงทุน การเงิน และจริยธรรมวิชาชีพที่ได้รับการยอมรับในระดับนานาชาติ",
-            },
-            {
-              name: "Society of Actuaries",
-              href: "https://www.soa.org/",
-              logoSrc: "assets/partner-soa.svg",
-              copy: "องค์กรวิชาชีพด้าน actuarial science ที่เกี่ยวข้องกับการวิเคราะห์ความเสี่ยงและแบบจำลองเชิงปริมาณ",
-            },
-          ],
-        },
-        {
-          key: "university",
-          title: "มหาวิทยาลัย",
-          description: "มหาวิทยาลัยและโครงการการศึกษาที่เกี่ยวข้องกับ financial engineering, quantitative finance และชุมชนวิชาการสายควอนท์",
-          items: [
-            {
-              name: "KMITL-NIDA Financial Engineering",
-              href: "https://nida.kmitl.ac.th/fe/",
-              logoSrc: "assets/partner-kmitl-nida.svg",
-              copy: "โครงการ Double Degree ด้านวิศวกรรมการเงินของ KMITL และ NIDA",
-            },
-            {
-              name: "WorldQuant University",
-              href: "https://www.wqu.edu/",
-              logoSrc: "assets/partner-wqu.svg",
-              copy: "มหาวิทยาลัยออนไลน์ที่มีหลักสูตรด้าน data science และ financial engineering",
-            },
-            {
-              name: "Quant CU",
-              href: "https://quant-cu.github.io/",
-              logoSrc: "assets/partner-quant-cu.svg",
-              copy: "ชุมชนด้าน quantitative computational finance ของนักศึกษาจุฬาลงกรณ์มหาวิทยาลัย",
-            },
-          ],
-        },
-        {
-          key: "company",
-          title: "บริษัท",
-          description: "องค์กรและผู้ให้บริการด้านข้อมูล เทคโนโลยี และการวิเคราะห์ที่มีบทบาทในระบบนิเวศของ quantitative finance",
-          items: [
-            {
-              name: "Bloomberg Professional Services",
-              href: "https://www.bloomberg.com/professional",
-              logoSrc: "assets/partner-bloomberg.svg",
-              copy: "บริการข้อมูล ข่าวสาร และเครื่องมือวิเคราะห์สำหรับผู้ปฏิบัติงานในตลาดการเงิน",
-            },
-            {
-              name: "LSEG Data & Analytics",
-              href: "https://www.lseg.com/content/lseg/en_us/data-analytics.html",
-              logoSrc: "assets/partner-lseg.svg",
-              copy: "แพลตฟอร์มข้อมูลและการวิเคราะห์ตลาดการเงินของ London Stock Exchange Group",
-            },
-            {
-              name: "WorldQuant",
-              href: "https://www.worldquant.com/",
-              logoSrc: "assets/partner-worldquant.svg",
-              copy: "บริษัทด้าน quantitative research และการลงทุนเชิงระบบในระดับสากล",
-            },
-          ],
-        },
-      ],
-      en: [
-        {
-          key: "facebook",
-          title: "Facebook Pages",
-          description: "Public social channels for following updates, events, and announcements from organizations relevant to quantitative finance and professional development.",
-          items: [
-            {
-              name: "CFA Institute Facebook",
-              href: "https://www.facebook.com/CFAInstitute/",
-              logoSrc: "assets/partner-cfa.svg",
-              copy: "Official Facebook page for CFA Institute updates on education, exams, and professional events.",
-            },
-            {
-              name: "WorldQuant University Facebook",
-              href: "https://www.facebook.com/worldquantuniversity/",
-              logoSrc: "assets/partner-wqu.svg",
-              copy: "Public updates on programs, admissions, and academic activity from WorldQuant University.",
-            },
-            {
-              name: "Bloomberg Facebook",
-              href: "https://www.facebook.com/bloomberg/",
-              logoSrc: "assets/partner-bloomberg.svg",
-              copy: "Financial market, business, and economic coverage distributed through Bloomberg’s public Facebook page.",
-            },
-          ],
-        },
-        {
-          key: "institute",
-          title: "Institute",
-          description: "Professional institutes and credentialing bodies relevant to quantitative finance, investment analysis, and adjacent technical disciplines.",
-          items: [
-            {
-              name: "CQF",
-              href: "https://www.cqf.com/",
-              logoSrc: "assets/partner-cqf.svg",
-              copy: "The Certificate in Quantitative Finance is a professional qualification focused on quant finance and financial engineering.",
-            },
-            {
-              name: "CFA Institute",
-              href: "https://www.cfainstitute.org/",
-              logoSrc: "assets/partner-cfa.svg",
-              copy: "A global professional body for investment practitioners, ethics, and finance education.",
-            },
-            {
-              name: "Society of Actuaries",
-              href: "https://www.soa.org/",
-              logoSrc: "assets/partner-soa.svg",
-              copy: "A leading actuarial professional organization covering risk, modeling, and quantitative decision frameworks.",
-            },
-          ],
-        },
-        {
-          key: "university",
-          title: "University",
-          description: "Academic programs and university-linked communities relevant to financial engineering, quantitative finance, and applied computational finance.",
-          items: [
-            {
-              name: "KMITL-NIDA Financial Engineering",
-              href: "https://nida.kmitl.ac.th/fe/",
-              logoSrc: "assets/partner-kmitl-nida.svg",
-              copy: "A Thai double-degree program in financial engineering jointly offered by KMITL and NIDA.",
-            },
-            {
-              name: "WorldQuant University",
-              href: "https://www.wqu.edu/",
-              logoSrc: "assets/partner-wqu.svg",
-              copy: "An online university offering quantitative programs including financial engineering and data science.",
-            },
-            {
-              name: "Quant CU",
-              href: "https://quant-cu.github.io/",
-              logoSrc: "assets/partner-quant-cu.svg",
-              copy: "A Chulalongkorn University student community focused on quantitative computational finance.",
-            },
-          ],
-        },
-        {
-          key: "company",
-          title: "Company",
-          description: "Companies and platforms active in market data, analytics, quantitative research, and financial technology.",
-          items: [
-            {
-              name: "Bloomberg Professional Services",
-              href: "https://www.bloomberg.com/professional",
-              logoSrc: "assets/partner-bloomberg.svg",
-              copy: "Market data, news, and analytical infrastructure used across global financial institutions.",
-            },
-            {
-              name: "LSEG Data & Analytics",
-              href: "https://www.lseg.com/content/lseg/en_us/data-analytics.html",
-              logoSrc: "assets/partner-lseg.svg",
-              copy: "Financial markets data and analytics services from London Stock Exchange Group.",
-            },
-            {
-              name: "WorldQuant",
-              href: "https://www.worldquant.com/",
-              logoSrc: "assets/partner-worldquant.svg",
-              copy: "A quantitative research and systematic investment firm with a global presence.",
-            },
-          ],
-        },
-      ],
+    const collaboratorGroups = database.collaborators.groups;
+    const academicPageContent = {
+      th: {
+        ...database.academicPages.academic.th,
+        subtitle: source.site.titleTh,
+      },
+      en: {
+        ...database.academicPages.academic.en,
+        subtitle: source.site.titleEn,
+      },
+    };
+
+    const academicConferenceContent = {
+      th: {
+        ...database.academicPages.academicConference.th,
+        subtitle: source.site.titleTh,
+      },
+      en: {
+        ...database.academicPages.academicConference.en,
+        subtitle: source.site.titleEn,
+      },
+    };
+
+    const academicCommitteeBoardContent = {
+      th: {
+        ...database.academicPages.academicCommitteeBoard.th,
+        subtitle: source.site.titleTh,
+      },
+      en: {
+        ...database.academicPages.academicCommitteeBoard.en,
+        subtitle: source.site.titleEn,
+      },
+    };
+
+    const quantJobsContent = {
+      th: {
+        ...database.careerPages.quantJobs.th,
+        subtitle: source.site.titleTh,
+      },
+      en: {
+        ...database.careerPages.quantJobs.en,
+        subtitle: source.site.titleEn,
+      },
+    };
+
+    const trainingContent = {
+      th: {
+        ...database.careerPages.training.th,
+        subtitle: source.site.titleTh,
+      },
+      en: {
+        ...database.careerPages.training.en,
+        subtitle: source.site.titleEn,
+      },
     };
 
     return {
@@ -866,9 +570,12 @@
           snapshotBody:
             "เว็บไซต์ฉบับใหม่นี้จัดข้อมูลสำคัญของสมาคมให้อยู่ในรูปแบบที่อ่านง่าย เป็นทางการ และรองรับสองภาษา",
           imageAlt: "ภาพประกอบเว็บไซต์สมาคม TQF",
-          recentTitle: "กิจกรรมล่าสุด",
-          recentCopy:
-            "รวมความเคลื่อนไหวล่าสุดของสมาคมจากข้อมูลสาธารณะที่เผยแพร่บนเว็บไซต์",
+          announcementTitle: "ประกาศ",
+          announcementCopy:
+            "ประกาศล่าสุดของสมาคมและเครือข่ายความร่วมมือ",
+          activityTitle: "กิจกรรม",
+          activityCopy:
+            "กิจกรรมล่าสุดของสมาคมและเครือข่ายความร่วมมือ เรียงตามวันที่จัดกิจกรรม",
           cards: [
             {
               href: "about.html",
@@ -927,9 +634,12 @@
           snapshotBody:
             "The website presents the association profile, committee, bylaws, and quant pathway in Thai and English.",
           imageAlt: "TQF association website visual",
-          recentTitle: "Recent Activity",
-          recentCopy:
-            "Latest association activity and public website updates presented in one place.",
+          announcementTitle: "Announcements",
+          announcementCopy:
+            "The latest announcement from the association and its partner network.",
+          activityTitle: "Activities",
+          activityCopy:
+            "Recent activities from the association and its partner network, ordered by event date.",
           cards: [
             {
               href: "about.html",
@@ -981,19 +691,97 @@
           ],
         },
       },
+      announcements: {
+        th: {
+          eyebrow: "ประกาศ",
+          title: "ประกาศทั้งหมด",
+          body: "รวบรวมประกาศอย่างเป็นทางการ โอกาสทางวิชาชีพ และกำหนดการสำคัญจากสมาคมและเครือข่ายความร่วมมือ",
+          overview: "ประกาศเรียงตามวันที่เผยแพร่หรือวันที่เกี่ยวข้อง โดยหน้าแรกจะแสดงเฉพาะ 3 รายการเด่นล่าสุด",
+          items: announcementSources.map((item) => ({
+            date: item.date,
+            dateLabel: item.dateLabelTh,
+            upcoming: item.upcoming,
+            href: item.href,
+            imageSrc: item.imageSrc,
+            category: item.categoryTh,
+            title: item.titleTh,
+            copy: item.copyTh,
+            time: item.timeTh,
+            location: item.locationTh,
+          })),
+        },
+        en: {
+          eyebrow: "Announcements",
+          title: "All Announcements",
+          body: "Official notices, professional opportunities, and important schedules from the association and its partner network.",
+          overview: "Announcements are ordered by their publication or relevant date. The homepage shows only the three latest highlights.",
+          items: announcementSources.map((item) => ({
+            date: item.date,
+            dateLabel: item.dateLabelEn,
+            upcoming: item.upcoming,
+            href: item.href,
+            imageSrc: item.imageSrc,
+            category: item.categoryEn,
+            title: item.titleEn,
+            copy: item.copyEn,
+            time: item.timeEn,
+            location: item.locationEn,
+          })),
+        },
+      },
+      news: {
+        th: {
+          eyebrow: "ข่าวสาร",
+          title: "ข่าวสารทั้งหมด",
+          body: "ข่าวสาร ความร่วมมือ และความเคลื่อนไหวสำคัญที่เกี่ยวข้องกับภารกิจของสมาคม",
+          overview: "หน้ารวมข่าวสารแสดงรายการทั้งหมด ขณะที่หน้าแรกคัดเลือกเพียง 3 รายการเด่น",
+          items: newsSources.map((item) => ({
+            date: item.date,
+            dateLabel: item.dateLabelTh,
+            upcoming: item.upcoming,
+            href: item.href,
+            imageSrc: item.imageSrc,
+            category: item.categoryTh,
+            title: item.titleTh,
+            copy: item.copyTh,
+            time: item.timeTh,
+            location: item.locationTh,
+          })),
+        },
+        en: {
+          eyebrow: "News",
+          title: "All News",
+          body: "News, collaborations, and significant updates related to the association's mission.",
+          overview: "The archive contains every published news item, while the homepage presents only three selected highlights.",
+          items: newsSources.map((item) => ({
+            date: item.date,
+            dateLabel: item.dateLabelEn,
+            upcoming: item.upcoming,
+            href: item.href,
+            imageSrc: item.imageSrc,
+            category: item.categoryEn,
+            title: item.titleEn,
+            copy: item.copyEn,
+            time: item.timeEn,
+            location: item.locationEn,
+          })),
+        },
+      },
       activities: {
         th: {
           eyebrow: "กิจกรรม",
           title: "กิจกรรม",
           subtitle: source.site.titleTh,
           body:
-            "รวบรวมโพสต์กิจกรรมสาธารณะจาก Facebook ของ QuantCorner โดยคัดเฉพาะรายการที่เป็นอีเวนต์หรือเวิร์กช็อป",
+            "รวบรวมกิจกรรมสาธารณะของสมาคมและเครือข่ายความร่วมมือ โดยคัดเฉพาะรายการที่เป็นอีเวนต์ เวิร์กช็อป หรือกิจกรรมวิชาการ",
           panelTitle: "ภาพรวมกิจกรรมล่าสุด",
           panelBody:
-            "แสดงเฉพาะกิจกรรมที่เป็นอีเวนต์จากโพสต์สาธารณะของ QuantCorner บน Facebook",
+            "แสดงกิจกรรมจากช่องทางสาธารณะของ TQF, QuantCorner, Quant CU และเครือข่ายความร่วมมือ",
           imageAlt: "ภาพประกอบกิจกรรมของสมาคม TQF",
           items: activities.map((item) => ({
             date: item.date,
+            dateLabel: item.dateLabelTh,
+            upcoming: item.upcoming,
             href: item.href,
             imageSrc: item.imageSrc,
             category: item.categoryTh,
@@ -1008,13 +796,15 @@
           title: "Activities",
           subtitle: source.site.titleEn,
           body:
-            "A curated list of public event posts shared through the QuantCorner Facebook page.",
+            "A curated list of public events, workshops, and academic activities from the association and its collaborators.",
           panelTitle: "Latest activity overview",
           panelBody:
-            "This page highlights public event announcements shared through the QuantCorner Facebook page.",
+            "This page highlights public event announcements from TQF, QuantCorner, Quant CU, and partner networks.",
           imageAlt: "TQF association activities visual",
           items: activities.map((item) => ({
             date: item.date,
+            dateLabel: item.dateLabelEn,
+            upcoming: item.upcoming,
             href: item.href,
             imageSrc: item.imageSrc,
             category: item.categoryEn,
@@ -1051,178 +841,9 @@
           groups: collaboratorGroups.en,
         },
       },
-      academic: {
-        th: {
-          eyebrow: "วิชาการ",
-          title: "วิชาการ",
-          subtitle: source.site.titleTh,
-          body:
-            "ศูนย์รวมองค์ความรู้และแนวทางการพัฒนาทักษะสำหรับผู้สนใจสาย quantitative finance, financial engineering และการวิเคราะห์เชิงปริมาณ",
-          panelTitle: "โครงสร้างด้านวิชาการ",
-          panelBody:
-            "หน้าเว็บนี้รวบรวมกรอบการเรียนรู้ ประเด็นองค์ความรู้หลัก และเครือข่ายด้านวิชาการที่เกี่ยวข้องกับภารกิจของสมาคม",
-          imageAlt: "ภาพประกอบด้านวิชาการของสมาคม",
-          highlights: [
-            {
-              href: "academic-committee-board.html",
-              kicker: "คณะกรรมการ",
-              title: "คณะกรรมการวิชาการ",
-              copy: "โครงสร้างคณะกรรมการวิชาการสำหรับกำกับทิศทางองค์ความรู้ มาตรฐาน และการพัฒนากิจกรรมด้านวิชาการของสมาคม",
-            },
-            {
-              href: "journal.html",
-              kicker: "วารสาร",
-              title: "วารสาร",
-              copy: "พื้นที่สำหรับบทความ งานวิเคราะห์ และองค์ความรู้เชิงลึกที่เกี่ยวข้องกับ quantitative finance และ financial engineering",
-            },
-            {
-              href: "magazine.html",
-              kicker: "สื่อเผยแพร่",
-              title: "แมกกาซีน",
-              copy: "ช่องทางนำเสนอข่าวสาร บทสรุปประเด็นวิชาการ และเนื้อหาที่เข้าถึงได้ง่ายสำหรับสมาชิกและผู้สนใจ",
-            },
-            {
-              href: "articles.html",
-              kicker: "บทความ",
-              title: "บทความ",
-              copy: "รวมบทความเรียบเรียงเชิงวิชาการจากเนื้อหาของสมาคมในรูปแบบอ่านต่อได้บนเว็บไซต์",
-            },
-            {
-              href: "book-series.html",
-              kicker: "สิ่งพิมพ์",
-              title: "ชุดหนังสือ",
-              copy: "คลังหนังสือและคู่มือดาวน์โหลดที่พัฒนาจากเนื้อหาวิชาการของสมาคมในรูปแบบอ่านสะดวกและพร้อมใช้งาน",
-            },
-            {
-              href: "academic-conference.html",
-              kicker: "งานประชุม",
-              title: "งานประชุมวิชาการ",
-              copy: "พื้นที่สำหรับประกาศกำหนดการประชุมวิชาการ หัวข้อการนำเสนอ การลงทะเบียน และข้อมูลวิทยากรของสมาคม",
-            },
-          ],
-          pillars: [
-            "พื้นฐานด้านการเงิน คณิตศาสตร์ และการเขียนโปรแกรม",
-            "องค์ความรู้หลักด้านการวิเคราะห์สินทรัพย์ ความเสี่ยง และตราสารการเงิน",
-            "หัวข้อเฉพาะทางด้าน machine learning, portfolio management, trading และ regulation",
-          ],
-        },
-        en: {
-          eyebrow: "Academic",
-          title: "Academic",
-          subtitle: source.site.titleEn,
-          body:
-            "A knowledge hub for people interested in quantitative finance, financial engineering, and applied quantitative analysis.",
-          panelTitle: "Academic structure",
-          panelBody:
-            "This page brings together learning pathways, core knowledge areas, and academic network references aligned with the association’s mission.",
-          imageAlt: "Academic visual",
-          highlights: [
-            {
-              href: "academic-committee-board.html",
-              kicker: "Committee",
-              title: "Academic Committee Board",
-              copy: "A dedicated academic committee structure for knowledge direction, standards, and the development of association-led academic work.",
-            },
-            {
-              href: "journal.html",
-              kicker: "Journal",
-              title: "Journal",
-              copy: "A publication space for articles, analysis, and in-depth knowledge relevant to quantitative finance and financial engineering.",
-            },
-            {
-              href: "magazine.html",
-              kicker: "Magazine",
-              title: "Magazine",
-              copy: "An accessible publication format for news, summaries, interviews, and academic communication for members and the wider community.",
-            },
-            {
-              href: "articles.html",
-              kicker: "Articles",
-              title: "Articles",
-              copy: "Long-form article pages developed from the association’s published academic and institutional content.",
-            },
-            {
-              href: "book-series.html",
-              kicker: "Publications",
-              title: "Book Series",
-              copy: "A downloadable library of books and handbooks developed from the association’s academic content.",
-            },
-            {
-              href: "academic-conference.html",
-              kicker: "Conference",
-              title: "Academic Conference",
-              copy: "A formal page for conference schedules, registration details, speaker information, and academic event announcements.",
-            },
-          ],
-          pillars: [
-            "Foundations in finance, mathematics, and programming",
-            "Core knowledge in asset behavior, risk, and financial instruments",
-            "Specialized topics including machine learning, portfolio management, trading, and regulation",
-          ],
-        },
-      },
-      academicConference: {
-        th: {
-          eyebrow: "วิชาการ",
-          title: "งานประชุมวิชาการ",
-          subtitle: source.site.titleTh,
-          body:
-            "พื้นที่สำหรับประกาศงานประชุมวิชาการของสมาคม เช่น กำหนดการ หัวข้อบรรยาย การลงทะเบียน และรายละเอียดสำหรับผู้เข้าร่วม",
-          overview:
-            "หน้านี้จัดไว้เป็นพื้นที่ทางการสำหรับการสื่อสารงานประชุมวิชาการของสมาคม โดยสอดคล้องกับข้อบังคับที่กล่าวถึงสิทธิประโยชน์ด้านส่วนลดการลงทะเบียนและบทบาทของวิทยากรผู้เชี่ยวชาญ",
-          bullets: [
-            "กำหนดการประชุม สถานที่จัดงาน และหัวข้อสำคัญของแต่ละงาน",
-            "ข้อมูลการลงทะเบียน สิทธิประโยชน์ของสมาชิก และรูปแบบการเข้าร่วม",
-            "รายละเอียดวิทยากร ผู้ทรงคุณวุฒิ และกิจกรรมทางวิชาการที่เกี่ยวข้อง",
-          ],
-        },
-        en: {
-          eyebrow: "Academic",
-          title: "Academic Conference",
-          subtitle: source.site.titleEn,
-          body:
-            "A formal page for association-led academic conference announcements, including schedules, presentation themes, registration details, and participation information.",
-          overview:
-            "This page serves as the official location for the association’s academic conference communication, aligned with the bylaws that reference member registration discounts and expert speaker participation.",
-          bullets: [
-            "Conference schedules, venues, and major session themes",
-            "Registration details, member benefits, and attendance format",
-            "Speaker, expert, and related academic activity information",
-          ],
-        },
-      },
-      academicCommitteeBoard: {
-        th: {
-          eyebrow: "วิชาการ",
-          title: "คณะกรรมการวิชาการ",
-          subtitle: source.site.titleTh,
-          body:
-            "หน้าสำหรับโครงสร้างคณะกรรมการวิชาการของสมาคม โดยใช้เผยแพร่บทบาท หน้าที่ และองค์ประกอบของคณะกรรมการเมื่อสมาคมกำหนดรายละเอียดอย่างเป็นทางการ",
-          imageAlt: "ภาพประกอบคณะกรรมการวิชาการ",
-          overview:
-            "ส่วนนี้ใช้เป็นพื้นที่อย่างเป็นทางการสำหรับแสดงโครงสร้างการกำกับดูแลงานวิชาการของสมาคม",
-          bullets: [
-            "บทบาทในการกำหนดทิศทางด้านวิชาการและมาตรฐานองค์ความรู้",
-            "การสนับสนุนหลักสูตร กิจกรรมวิชาการ และการพัฒนาเนื้อหาสำหรับสมาชิก",
-            "การประสานเครือข่ายผู้เชี่ยวชาญ มหาวิทยาลัย และภาคอุตสาหกรรมในประเด็นวิชาการ",
-          ],
-        },
-        en: {
-          eyebrow: "Academic",
-          title: "Academic Committee Board",
-          subtitle: source.site.titleEn,
-          body:
-            "A dedicated page for the association’s academic committee structure, intended to publish formal roles, responsibilities, and appointments when officially available.",
-          imageAlt: "Academic committee board visual",
-          overview:
-            "This page serves as the formal location for presenting the governance structure of the association’s academic work.",
-          bullets: [
-            "Guide academic direction and knowledge standards",
-            "Support curricula, academic events, and member-facing learning content",
-            "Coordinate expert, university, and industry networks around academic initiatives",
-          ],
-        },
-      },
+      academic: academicPageContent,
+      academicConference: academicConferenceContent,
+      academicCommitteeBoard: academicCommitteeBoardContent,
       journal: {
         th: {
           eyebrow: "วิชาการ",
@@ -1367,70 +988,8 @@
           publications: bookSeriesCatalog.en,
         },
       },
-      quantJobs: {
-        th: {
-          eyebrow: "วิชาชีพ",
-          title: "งานสายควอนท์",
-          subtitle: source.site.titleTh,
-          body:
-            "หน้าสำหรับรวบรวมข้อมูลตำแหน่งงาน สายอาชีพ และบทบาทการทำงานที่เกี่ยวข้องกับ quantitative finance, financial engineering และงานวิเคราะห์เชิงปริมาณ",
-          imageAlt: "ภาพประกอบงานด้าน Quant",
-          overview:
-            "ส่วนนี้ใช้เป็นพื้นที่ของสมาคมสำหรับนำเสนอแนวทางสายอาชีพ บทบาทงาน และโอกาสการพัฒนาวิชาชีพในสายงานควอนท์",
-          bullets: [
-            "แนวทางสายอาชีพและบทบาทงานที่เกี่ยวข้องกับ quantitative finance",
-            "ขอบเขตทักษะที่ผู้สมัครควรเตรียมสำหรับตำแหน่งงานด้าน Quant",
-            "พื้นที่สำหรับเผยแพร่โอกาสงานหรือข้อมูลที่เป็นประโยชน์ต่อสมาชิกในอนาคต",
-          ],
-        },
-        en: {
-          eyebrow: "Career",
-          title: "Quant Jobs",
-          subtitle: source.site.titleEn,
-          body:
-            "A page for career roles, job functions, and professional pathways related to quantitative finance, financial engineering, and applied quantitative analysis.",
-          imageAlt: "Quant jobs visual",
-          overview:
-            "This section serves as the association’s formal space for presenting career directions, job functions, and professional development pathways in quant-related work.",
-          bullets: [
-            "Career tracks and job functions related to quantitative finance",
-            "Core skill expectations for applicants targeting quant roles",
-            "A future space for job opportunities and member-relevant career information",
-          ],
-        },
-      },
-      training: {
-        th: {
-          eyebrow: "วิชาชีพ",
-          title: "การอบรม",
-          subtitle: source.site.titleTh,
-          body:
-            "หน้าสำหรับการอบรมและการพัฒนาทักษะวิชาชีพของสมาคม เพื่อสนับสนุนการเสริมศักยภาพของสมาชิกและผู้สนใจในสายงาน quantitative finance",
-          imageAlt: "ภาพประกอบการอบรม",
-          overview:
-            "ข้อบังคับของสมาคมระบุถึงสิทธิประโยชน์ด้านส่วนลดในการลงทะเบียนอบรมที่สมาคมจัด จึงหน้านี้ถูกจัดไว้เป็นพื้นที่อย่างเป็นทางการสำหรับการอบรมและการพัฒนาทักษะ",
-          bullets: [
-            "พื้นที่สำหรับประกาศหลักสูตรอบรมและกิจกรรมพัฒนาทักษะของสมาคม",
-            "รองรับการสื่อสารรายละเอียดหัวข้อ วิทยากร และกลุ่มเป้าหมายของการอบรม",
-            "เชื่อมโยงกับภารกิจของสมาคมในการพัฒนาและเสริมศักยภาพด้านวิชาชีพ",
-          ],
-        },
-        en: {
-          eyebrow: "Career",
-          title: "Training",
-          subtitle: source.site.titleEn,
-          body:
-            "A page for professional training and capability development organized to support members and interested participants in quantitative finance.",
-          imageAlt: "Training visual",
-          overview:
-            "The association bylaws refer to registration discounts for training programs organized by the association, so this page is positioned as the formal location for future training activity and skills development.",
-          bullets: [
-            "A formal space for training programs and capability-building activities",
-            "Supports course information such as topics, speakers, and intended audience",
-            "Aligned with the association mission of strengthening professional capability",
-          ],
-        },
-      },
+      quantJobs: quantJobsContent,
+      training: trainingContent,
       about: {
         th: {
           eyebrow: "เกี่ยวกับสมาคม",
@@ -1628,57 +1187,16 @@
     const activitiesNav = navBySlug.activities;
     const collaboratorsNav = navBySlug.collaborators;
     const academicNav = navBySlug.academic;
-    const quantNav = navBySlug["quant-pathway"];
-    const quantJobsNav = navBySlug["quant-jobs"];
-    const trainingNav = navBySlug.training;
     const associationNav = [navBySlug.about, navBySlug.team, navBySlug.bylaws].filter(Boolean);
     const associationActive = associationNav.some((item) => item.slug === slug);
     const academicActive = ["academic", "academic-committee-board", "academic-conference", "journal", "magazine", "articles", "book-series"].includes(slug);
-    const careerActive = ["quant-pathway", "quant-jobs", "training"].includes(slug);
-    const collaboratorChildren =
-      state.lang === "th"
-        ? [
-            { href: "collaborators.html#facebook", label: "เพจเฟซบุ๊ก" },
-            { href: "collaborators.html#institute", label: "สถาบัน" },
-            { href: "collaborators.html#university", label: "มหาวิทยาลัย" },
-            { href: "collaborators.html#company", label: "บริษัท" },
-          ]
-        : [
-            { href: "collaborators.html#facebook", label: "Facebook Pages" },
-            { href: "collaborators.html#institute", label: "Institute" },
-            { href: "collaborators.html#university", label: "University" },
-            { href: "collaborators.html#company", label: "Company" },
-          ];
-    const academicChildren =
-      state.lang === "th"
-        ? [
-            { href: "academic-committee-board.html", label: "คณะกรรมการวิชาการ" },
-            { href: "academic-conference.html", label: "งานประชุมวิชาการ" },
-            { href: "journal.html", label: "วารสาร" },
-            { href: "magazine.html", label: "แมกกาซีน" },
-            { href: "articles.html", label: "บทความ" },
-            { href: "book-series.html", label: "ชุดหนังสือ" },
-          ]
-        : [
-            { href: "academic-committee-board.html", label: "Academic Committee Board" },
-            { href: "academic-conference.html", label: "Academic Conference" },
-            { href: "journal.html", label: "Journal" },
-            { href: "magazine.html", label: "Magazine" },
-            { href: "articles.html", label: "Articles" },
-            { href: "book-series.html", label: "Book Series" },
-          ];
-    const careerChildren =
-      state.lang === "th"
-        ? [
-            { href: quantNav ? quantNav.href : "quant-pathway.html", label: "เส้นทาง Quant", active: slug === "quant-pathway" },
-            { href: quantJobsNav ? quantJobsNav.href : "quant-jobs.html", label: "งานด้าน Quant", active: slug === "quant-jobs" },
-            { href: trainingNav ? trainingNav.href : "training.html", label: "การอบรม", active: slug === "training" },
-          ]
-        : [
-            { href: quantNav ? quantNav.href : "quant-pathway.html", label: "Quant Pathway", active: slug === "quant-pathway" },
-            { href: quantJobsNav ? quantJobsNav.href : "quant-jobs.html", label: "Quant Jobs", active: slug === "quant-jobs" },
-            { href: trainingNav ? trainingNav.href : "training.html", label: "Training", active: slug === "training" },
-          ];
+    const careerActive = ["quant-pathway", "quant-jobs", "job-directory", "training"].includes(slug);
+    const collaboratorChildren = database.navigation.dropdowns.collaborators[state.lang];
+    const academicChildren = database.navigation.dropdowns.academic[state.lang];
+    const careerChildren = database.navigation.dropdowns.career[state.lang].map((item) => ({
+      ...item,
+      active: item.slug === slug,
+    }));
 
     headerRoot.innerHTML = `
       <div class="header-inner">
@@ -1709,32 +1227,6 @@
               </div>
             </details>
           </div>
-          ${activitiesNav ? `<a class="nav-link ${activitiesNav.slug === slug ? "is-active" : ""}" href="${activitiesNav.href}">${escapeHtml(state.lang === "th" ? activitiesNav.labelTh : activitiesNav.labelEn)}</a>` : ""}
-          ${
-            collaboratorsNav
-              ? `
-                <div class="nav-dropdown">
-                  <details class="nav-dropdown-panel">
-                    <summary class="nav-link nav-summary ${collaboratorsNav.slug === slug ? "is-active" : ""}">
-                      <span>${escapeHtml(state.lang === "th" ? collaboratorsNav.labelTh : collaboratorsNav.labelEn)}</span>
-                      <span class="nav-caret" aria-hidden="true"></span>
-                    </summary>
-                    <div class="dropdown-menu">
-                      ${collaboratorChildren
-                        .map(
-                          (item) => `
-                            <a class="dropdown-link" href="${item.href}">
-                              ${escapeHtml(item.label)}
-                            </a>
-                          `,
-                        )
-                        .join("")}
-                    </div>
-                  </details>
-                </div>
-              `
-              : ""
-          }
           ${
             academicNav
               ? `
@@ -1760,6 +1252,7 @@
               `
               : ""
           }
+          ${activitiesNav ? `<a class="nav-link ${activitiesNav.slug === slug ? "is-active" : ""}" href="${activitiesNav.href}">${escapeHtml(state.lang === "th" ? activitiesNav.labelTh : activitiesNav.labelEn)}</a>` : ""}
           <div class="nav-dropdown">
             <details class="nav-dropdown-panel">
               <summary class="nav-link nav-summary ${careerActive ? "is-active" : ""}">
@@ -1779,6 +1272,31 @@
               </div>
             </details>
           </div>
+          ${
+            collaboratorsNav
+              ? `
+                <div class="nav-dropdown">
+                  <details class="nav-dropdown-panel">
+                    <summary class="nav-link nav-summary ${collaboratorsNav.slug === slug ? "is-active" : ""}">
+                      <span>${escapeHtml(state.lang === "th" ? collaboratorsNav.labelTh : collaboratorsNav.labelEn)}</span>
+                      <span class="nav-caret" aria-hidden="true"></span>
+                    </summary>
+                    <div class="dropdown-menu">
+                      ${collaboratorChildren
+                        .map(
+                          (item) => `
+                            <a class="dropdown-link" href="${item.href}">
+                              ${escapeHtml(item.label)}
+                            </a>
+                          `,
+                        )
+                        .join("")}
+                    </div>
+                  </details>
+                </div>
+              `
+              : ""
+          }
           <div class="nav-language language-switcher" aria-label="${escapeHtml(langUi.language)}">
             <button class="lang-button ${state.lang === "th" ? "is-active" : ""}" type="button" data-lang="th">TH</button>
             <button class="lang-button ${state.lang === "en" ? "is-active" : ""}" type="button" data-lang="en">EN</button>
@@ -1798,6 +1316,7 @@
   function renderPage() {
     const pageTitle = {
       home: state.lang === "th" ? "TQF | หน้าแรก" : "TQF | Home",
+      announcements: state.lang === "th" ? "TQF | ประกาศ" : "TQF | Announcements",
       about: state.lang === "th" ? "TQF | เกี่ยวกับสมาคม" : "TQF | About",
       team: state.lang === "th" ? "TQF | คณะกรรมการ" : "TQF | Team",
       bylaws: state.lang === "th" ? "TQF | ข้อบังคับสมาคม" : "TQF | Bylaws",
@@ -1809,8 +1328,10 @@
       journal: state.lang === "th" ? "TQF | วารสาร" : "TQF | Journal",
       magazine: state.lang === "th" ? "TQF | แมกกาซีน" : "TQF | Magazine",
       articles: state.lang === "th" ? "TQF | บทความ" : "TQF | Articles",
+      news: state.lang === "th" ? "TQF | ข่าวสาร" : "TQF | News",
       bookSeries: state.lang === "th" ? "TQF | ชุดหนังสือ" : "TQF | Book Series",
       quantJobs: state.lang === "th" ? "TQF | งานด้าน Quant" : "TQF | Quant Jobs",
+      jobDirectory: state.lang === "th" ? "TQF | ค้นหางาน" : "TQF | Job Directory",
       training: state.lang === "th" ? "TQF | การอบรม" : "TQF | Training",
       quantPathway: state.lang === "th" ? "TQF | Quant Pathway" : "TQF | Quant Pathway",
     }[pageKey];
@@ -1819,6 +1340,7 @@
 
     const html = {
       home: renderHome(),
+      announcements: renderUpdateArchive("announcements"),
       about: renderAbout(),
       team: renderTeam(),
       bylaws: renderBylaws(),
@@ -1826,13 +1348,20 @@
       collaborators: renderCollaborators(),
       academic: renderAcademic(),
       academicCommitteeBoard: renderAcademicSubpage(content.academicCommitteeBoard[state.lang]),
-      academicConference: renderAcademicSubpage(content.academicConference[state.lang]),
+      academicConference: renderAcademicConference(),
       journal: renderPublicationPage(content.journal[state.lang]),
       magazine: renderPublicationPage(content.magazine[state.lang]),
       articles: renderArticles(),
+      news: renderUpdateArchive("news"),
       bookSeries: renderBookSeries(),
-      quantJobs: renderCareerSubpage(content.quantJobs[state.lang]),
-      training: renderCareerSubpage(content.training[state.lang]),
+      quantJobs: renderCareerSubpage(content.quantJobs[state.lang], {
+        limit: 5,
+        asiaLimit: 5,
+        directoryHref: "job-directory.html",
+        showAsiaJobs: true,
+      }),
+      jobDirectory: renderJobDirectory(),
+      training: renderTraining(),
       quantPathway: renderQuantPathway(),
     }[pageKey];
 
@@ -1851,7 +1380,6 @@
           </span>
           <div>
             <p class="panel-label">${escapeHtml(langUi.footerTitle)}</p>
-            <h2 class="footer-title">${escapeHtml(site.name)}</h2>
             <p class="footer-copy">${escapeHtml(langUi.footerCopy)}</p>
           </div>
         </div>
@@ -1872,31 +1400,116 @@
   function renderHome() {
     const page = content.home[state.lang];
     const langUi = ui[state.lang];
-    const site = content.site[state.lang];
+    const announcementItems = content.announcements[state.lang].items.slice(0, 3);
+    const newsItems = content.news[state.lang].items.slice(0, 3);
+    const activityItems = content.activities[state.lang].items;
+    const trainingPage = content.training[state.lang];
+    const articleItems = content.articles[state.lang].items.slice(0, 3);
+    const trainingItems = trainingPage.groups.map((group, index) => ({
+      href: `training.html#${group.id}`,
+      marker: pad(index + 1),
+      kicker: group.label,
+      title: group.title,
+      copy: group.description,
+    }));
 
     return `
       ${renderHero({
-        eyebrow: page.eyebrow,
+        eyebrow: state.lang === "th" ? "สมาคมวิชาชีพด้านการเงินเชิงปริมาณ" : "Professional Association for Quantitative Finance",
         title: page.title,
-        subtitle: page.subtitle,
+        subtitle: "",
         body: page.body,
-        panelTitle: page.panelTitle,
-        panelBody: page.panelBody,
-        meta: [
-          [state.lang === "th" ? "ที่อยู่" : "Address", site.address],
-          [state.lang === "th" ? "ติดต่อ" : "Contact", site.email],
-          [state.lang === "th" ? "ภาษา" : "Language", state.lang === "th" ? "ไทย / English" : "Thai / English"],
-        ],
       })}
 
       <section class="section">
-        ${renderSectionHeading(page.recentTitle, page.recentTitle, page.recentCopy)}
+        ${renderSectionHeading(page.announcementTitle, page.announcementTitle, page.announcementCopy)}
         <div class="activity-grid activity-grid-featured">
-          ${content.activities[state.lang].items
-            .slice(0, 3)
-            .map((item, index) => renderFeaturedActivityCard(item, index))
+          ${announcementItems.map((item, index) => renderFeaturedActivityCard(item, index)).join("")}
+        </div>
+        ${renderHomeArchiveLink("announcements.html", state.lang === "th" ? "ดูประกาศทั้งหมด" : "View all announcements")}
+      </section>
+
+      <section class="section">
+        ${renderSectionHeading(page.activityTitle, page.activityTitle, page.activityCopy)}
+        <div class="activity-grid activity-grid-featured">
+          ${activityItems.slice(0, 3).map((item, index) => renderFeaturedActivityCard(item, index)).join("")}
+        </div>
+        ${renderHomeArchiveLink("activities.html", state.lang === "th" ? "ดูกิจกรรมทั้งหมด" : "View all activities")}
+      </section>
+
+      <section class="section home-feed-section">
+        ${renderSectionHeading(
+          state.lang === "th" ? "การพัฒนาวิชาชีพ" : "Professional Development",
+          state.lang === "th" ? "การอบรม" : "Training",
+          state.lang === "th"
+            ? "หลักสูตร กรอบการเรียนรู้ และแนวทางพัฒนาทักษะสำหรับสมาชิกและผู้สนใจสายงานการเงินเชิงปริมาณ"
+            : "Training, learning frameworks, and professional-development pathways for members and aspiring quantitative-finance practitioners.",
+        )}
+        <div class="site-map-list home-feed-list">
+          ${trainingItems
+            .map((item, index) =>
+              renderHomeFeedItem(item, index, state.lang === "th" ? "ดูรายละเอียด" : "View details"),
+            )
             .join("")}
         </div>
+        ${renderHomeArchiveLink("training.html", state.lang === "th" ? "ดูข้อมูลการอบรมทั้งหมด" : "View all training information")}
+      </section>
+
+      <section class="section home-feed-section">
+        ${renderSectionHeading(
+          state.lang === "th" ? "องค์ความรู้" : "Knowledge",
+          state.lang === "th" ? "บทความ" : "Articles",
+          state.lang === "th"
+            ? "บทความคัดสรรด้าน quantitative finance การลงทุนเชิงปริมาณ และการพัฒนาวิชาชีพจากสมาคมและพันธมิตร"
+            : "Selected articles on quantitative finance, systematic investing, and professional development from the association and its partners.",
+        )}
+        <div class="site-map-list home-feed-list">
+          ${articleItems
+            .map((item, index) =>
+              renderHomeFeedItem(
+                {
+                  href: `articles.html#${item.id}`,
+                  marker: pad(index + 1),
+                  imageSrc: item.imageSrc,
+                  kicker: item.kicker,
+                  title: item.title,
+                  copy: item.summary,
+                },
+                index,
+                state.lang === "th" ? "อ่านบทความ" : "Read article",
+              ),
+            )
+            .join("")}
+        </div>
+        ${renderHomeArchiveLink("articles.html", state.lang === "th" ? "ดูบทความทั้งหมด" : "View all articles")}
+      </section>
+
+      <section class="section home-feed-section">
+        ${renderSectionHeading(
+          state.lang === "th" ? "ความเคลื่อนไหวของสมาคม" : "Association Updates",
+          state.lang === "th" ? "ข่าวสาร" : "News",
+          state.lang === "th"
+            ? "ข่าวสาร ประกาศ และความร่วมมือล่าสุดที่เกี่ยวข้องกับภารกิจของสมาคม"
+            : "Latest news, announcements, and collaborations related to the association's mission.",
+        )}
+        <div class="site-map-list home-feed-list">
+          ${newsItems
+            .map((item, index) =>
+              renderHomeFeedItem(
+                {
+                  href: item.href,
+                  marker: pad(index + 1),
+                  kicker: `${item.category} · ${formatDate(item.date)}`,
+                  title: item.title,
+                  copy: item.copy,
+                },
+                index,
+                state.lang === "th" ? "อ่านข่าว" : "Read news",
+              ),
+            )
+            .join("")}
+        </div>
+        ${renderHomeArchiveLink("news.html", state.lang === "th" ? "ดูข่าวสารทั้งหมด" : "View all news")}
       </section>
 
       <section class="section">
@@ -1917,50 +1530,29 @@
                     <span>→</span>
                   </div>
                 </a>
-              `,
+          `,
             )
             .join("")}
-        </div>
-      </section>
-
-      <section class="section">
-        <div class="overview-grid">
-          <figure class="image-panel" data-reveal>
-            <img src="assets/hero.jpg" alt="${escapeHtml(state.lang === "th" ? "ภาพประกอบเว็บไซต์สมาคม TQF" : "TQF association website visual")}" class="section-image">
-            <figcaption class="image-caption">${escapeHtml(state.lang === "th" ? "ภาพประกอบเว็บไซต์ของสมาคม" : "Association website visual")}</figcaption>
-          </figure>
-          <div class="content-card" data-reveal style="--delay: 110ms">
-            <span class="card-kicker">${escapeHtml(langUi.headerTag)}</span>
-            <h3 class="card-title">${escapeHtml(page.snapshotTitle)}</h3>
-            <p class="card-copy">${escapeHtml(page.snapshotBody)}</p>
-          </div>
-        </div>
-      </section>
-
-      <section class="section">
-        <div class="overview-grid">
-          <div class="content-card inverse" data-reveal>
-            <span class="card-kicker">${escapeHtml(langUi.headerTag)}</span>
-            <h3 class="card-title">${escapeHtml(state.lang === "th" ? "บทบาทของสมาคม" : "Association role")}</h3>
-            <p class="card-copy">${escapeHtml(state.lang === "th" ? "สมาคมมุ่งเน้นการเชื่อมโยงองค์ความรู้ เครือข่ายวิชาชีพ และการพัฒนาทักษะด้านการวิเคราะห์เชิงปริมาณและวิศวกรรมการเงิน" : "The association focuses on professional networking, knowledge exchange, and capability development in quantitative analysis and financial engineering.")}</p>
-          </div>
-          <div class="content-card" data-reveal style="--delay: 110ms">
-            <span class="card-kicker">${escapeHtml(langUi.institutionalNote)}</span>
-            <ul class="list-clean">
-              <li>${escapeHtml(content.about[state.lang].vision)}</li>
-              <li>${escapeHtml(state.lang === "th" ? "รองรับสองภาษาไทยและอังกฤษ" : "Supports both Thai and English site presentation.")}</li>
-              <li>${escapeHtml(state.lang === "th" ? "ครอบคลุมข้อมูลสำคัญของสมาคม" : "Covers the main association information.")}</li>
-            </ul>
-          </div>
         </div>
       </section>
     `;
   }
 
+  function renderHomeArchiveLink(href, label) {
+    return `
+      <div class="home-section-more" data-reveal>
+        <a class="secondary-button" href="${escapeHtml(href)}">
+          <span>${escapeHtml(label)}</span>
+          <span aria-hidden="true">→</span>
+        </a>
+      </div>
+    `;
+  }
+
   function renderActivities() {
     const page = content.activities[state.lang];
-    const upcomingItems = page.items.filter((item) => isUpcomingActivity(item.date));
-    const archiveItems = page.items.filter((item) => !isUpcomingActivity(item.date));
+    const upcomingItems = page.items.filter((item) => isUpcomingActivity(item.date, item.upcoming));
+    const archiveItems = page.items.filter((item) => !isUpcomingActivity(item.date, item.upcoming));
 
     return `
       ${renderHero({
@@ -2024,6 +1616,57 @@
     `;
   }
 
+  function renderUpdateArchive(type) {
+    const page = content[type][state.lang];
+
+    return `
+      ${renderHero({
+        eyebrow: page.eyebrow,
+        title: page.title,
+        subtitle: "",
+        body: page.body,
+      })}
+
+      <section class="section">
+        ${renderSectionHeading(page.eyebrow, page.title, page.overview)}
+        <div class="activity-list">
+          ${page.items.map((item, index) => renderActivityArchiveItem(item, index)).join("")}
+        </div>
+      </section>
+    `;
+  }
+
+  function renderHomeFeedItem(item, index, actionLabel) {
+    const external = /^https?:\/\//i.test(item.href);
+
+    return `
+      <a
+        class="site-map-item home-feed-item"
+        href="${escapeHtml(item.href)}"
+        ${external ? 'target="_blank" rel="noreferrer noopener"' : ""}
+        data-reveal
+        style="--delay: ${index * 65}ms"
+      >
+        <span class="site-map-index home-feed-index">
+          ${
+            item.imageSrc
+              ? `<img src="${escapeHtml(item.imageSrc)}" alt="" class="home-feed-logo">`
+              : escapeHtml(item.marker)
+          }
+        </span>
+        <div class="site-map-body">
+          <span class="card-kicker">${escapeHtml(item.kicker)}</span>
+          <h3 class="card-title">${escapeHtml(item.title)}</h3>
+          <p class="card-copy">${escapeHtml(item.copy)}</p>
+        </div>
+        <div class="site-map-action">
+          <span>${escapeHtml(actionLabel)}</span>
+          <span aria-hidden="true">→</span>
+        </div>
+      </a>
+    `;
+  }
+
   function renderCollaborators() {
     const page = content.collaborators[state.lang];
 
@@ -2051,12 +1694,12 @@
                 ${group.items
                   .map(
                     (item, index) => `
-                    <a class="link-card" href="${item.href}" target="_blank" rel="noreferrer noopener" data-reveal style="--delay: ${index * 70}ms">
+                    <a class="link-card ${group.key === "facebook" ? "link-card-facebook" : ""}" href="${item.href}" target="_blank" rel="noreferrer noopener" data-reveal style="--delay: ${index * 70}ms">
                       ${
                         item.logoSrc
                           ? `
-                            <div class="partner-logo-wrap">
-                              <img src="${item.logoSrc}" alt="${escapeHtml(item.name)} logo" class="partner-logo-image">
+                            <div class="partner-logo-wrap ${group.key === "facebook" ? "facebook-profile-wrap" : ""}">
+                              <img src="${item.logoSrc}" alt="${escapeHtml(item.name)} logo" class="partner-logo-image ${group.key === "facebook" ? "facebook-profile-image" : ""}">
                             </div>
                           `
                           : ""
@@ -2193,7 +1836,18 @@
     `;
   }
 
-  function renderCareerSubpage(page) {
+  function renderCareerSubpage(page, options = {}) {
+    const allListings = page.listings || [];
+    const thailandListings = options.showAsiaJobs
+      ? allListings.filter((item) => item.locationMarketCode === "TH").slice(0, options.limit || 5)
+      : allListings.slice(0, options.limit || allListings.length);
+    const asiaMarketCodes = new Set(["SG", "VN", "HK", "MY"]);
+    const asiaListings = options.showAsiaJobs
+      ? allListings
+          .filter((item) => asiaMarketCodes.has(item.locationMarketCode))
+          .slice(0, options.asiaLimit || 5)
+      : [];
+
     return `
       ${renderHero({
         eyebrow: page.eyebrow,
@@ -2209,26 +1863,386 @@
         ],
       })}
 
-      <section class="section">
-        ${renderSectionHeading(
-          state.lang === "th" ? "ภาพรวมวิชาชีพ" : "Career Overview",
-          page.title,
-          page.overview,
+      ${
+        thailandListings.length
+          ? `
+            <section class="section career-opportunities">
+              ${renderSectionHeading(
+                state.lang === "th" ? "ประเทศไทย" : "Thailand",
+                state.lang === "th" ? "ตำแหน่งงาน Quant ในประเทศไทย" : "Quant Jobs in Thailand",
+                options.showAsiaJobs
+                  ? state.lang === "th"
+                    ? "คัดเลือก 5 ตำแหน่งล่าสุดด้านการเงินเชิงปริมาณ วิศวกรรมการเงิน และการบริหารความเสี่ยงในประเทศไทย"
+                    : "Five latest roles in quantitative finance, financial engineering, and risk management in Thailand."
+                  : state.lang === "th"
+                    ? "ประกาศตำแหน่งงานด้านการเงินเชิงปริมาณและวิศวกรรมการเงินจากหน่วยงานในเครือข่ายวิชาชีพ"
+                    : "Recent quantitative-finance and financial-engineering opportunities from organizations in the professional network.",
+              )}
+              <div class="job-listings">
+                ${thailandListings.map((item, index) => renderJobListing(item, index)).join("")}
+              </div>
+              ${
+                options.directoryHref
+                  ? `
+                    <div class="job-directory-cta" data-reveal>
+                      <a class="job-directory-link" href="${options.directoryHref}">
+                        ${escapeHtml(state.lang === "th" ? "ดูตำแหน่งงานทั้งหมดและค้นหา" : "Browse and filter all jobs")}
+                        <span aria-hidden="true">→</span>
+                      </a>
+                    </div>
+                  `
+                  : ""
+              }
+            </section>
+          `
+          : ""
+      }
+
+      ${
+        options.showAsiaJobs && asiaListings.length
+          ? `
+            <section class="section career-opportunities asia-jobs-section">
+              ${renderSectionHeading(
+                state.lang === "th" ? "ภูมิภาคเอเชีย" : "Asia",
+                state.lang === "th" ? "งาน Quant ในเอเชีย" : "Quant Jobs in Asia",
+                state.lang === "th"
+                  ? "คัดเลือก 5 ตำแหน่งล่าสุดจากสิงคโปร์ เวียดนาม ฮ่องกง และมาเลเซีย"
+                  : "Five latest roles from Singapore, Vietnam, Hong Kong, and Malaysia.",
+              )}
+              <div class="job-listings">
+                ${asiaListings.map((item, index) => renderJobListing(item, index)).join("")}
+              </div>
+              <div class="job-directory-cta" data-reveal>
+                <a class="job-directory-link" href="job-directory.html">
+                  ${escapeHtml(state.lang === "th" ? "ดูตำแหน่งงานทั้งหมดและค้นหา" : "Browse and filter all jobs")}
+                  <span aria-hidden="true">→</span>
+                </a>
+              </div>
+            </section>
+          `
+          : `
+            <section class="section">
+              ${renderSectionHeading(
+                state.lang === "th" ? "ภาพรวมวิชาชีพ" : "Career Overview",
+                page.title,
+                page.overview,
+              )}
+              <div class="overview-grid">
+                <article class="content-card" data-reveal>
+                  <span class="card-kicker">${escapeHtml(state.lang === "th" ? "ภาพรวม" : "Overview")}</span>
+                  <h3 class="card-title">${escapeHtml(page.title)}</h3>
+                  <p class="card-copy">${escapeHtml(page.overview)}</p>
+                </article>
+                <article class="content-card inverse" data-reveal style="--delay: 90ms">
+                  <span class="card-kicker">${escapeHtml(state.lang === "th" ? "ขอบเขตเนื้อหา" : "Content Scope")}</span>
+                  <ul class="list-clean">
+                    ${page.bullets.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+                  </ul>
+                </article>
+              </div>
+            </section>
+          `
+      }
+    `;
+  }
+
+  function renderTraining() {
+    const page = content.training[state.lang];
+    const totalItems = page.groups.reduce((sum, group) => sum + group.items.length, 0);
+
+    return `
+      ${renderHero({
+        eyebrow: page.eyebrow,
+        title: page.title,
+        subtitle: page.subtitle,
+        body: page.body,
+      })}
+
+      <nav class="training-category-nav" aria-label="${escapeHtml(
+        state.lang === "th" ? "หมวดการอบรม" : "Training categories",
+      )}" data-reveal>
+        ${page.groups
+          .map(
+            (group, index) => `
+              <a class="training-category-link" href="#${escapeHtml(group.id)}">
+                <span>${pad(index + 1)}</span>
+                <strong>${escapeHtml(group.label)}</strong>
+              </a>
+            `,
+          )
+          .join("")}
+      </nav>
+
+      ${page.groups
+        .map(
+          (group) => `
+            <section class="section training-group" id="${escapeHtml(group.id)}">
+              ${renderSectionHeading(group.label, group.title, group.description)}
+              <div class="site-map-list home-feed-list">
+                ${group.items
+                  .map((item, index) =>
+                    renderHomeFeedItem(
+                      {
+                        ...item,
+                        marker: pad(index + 1),
+                      },
+                      index,
+                      state.lang === "th" ? "ดูรายละเอียด" : "View details",
+                    ),
+                  )
+                  .join("")}
+              </div>
+            </section>
+          `,
+        )
+        .join("")}
+
+      <p class="training-count" data-reveal>
+        ${escapeHtml(
+          state.lang === "th"
+            ? `รวม ${totalItems} รายการใน 3 หมวดการอบรม`
+            : `${totalItems} entries across three training categories`,
         )}
-        <div class="overview-grid">
-          <article class="content-card" data-reveal>
-            <span class="card-kicker">${escapeHtml(state.lang === "th" ? "ภาพรวม" : "Overview")}</span>
-            <h3 class="card-title">${escapeHtml(page.title)}</h3>
-            <p class="card-copy">${escapeHtml(page.overview)}</p>
-          </article>
-          <article class="content-card inverse" data-reveal style="--delay: 90ms">
-            <span class="card-kicker">${escapeHtml(state.lang === "th" ? "ขอบเขตเนื้อหา" : "Content Scope")}</span>
-            <ul class="list-clean">
-              ${page.bullets.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
-            </ul>
-          </article>
+      </p>
+    `;
+  }
+
+  function renderAcademicConference() {
+    const page = content.academicConference[state.lang];
+    const labels = state.lang === "th"
+      ? {
+          archive: "การประชุมที่ผ่านมา",
+          heading: "Climate Finance & Risk",
+          date: "วันที่",
+          venue: "สถานที่",
+          format: "รูปแบบ",
+          organizer: "หน่วยงานผู้จัด",
+          source: "เว็บไซต์งานประชุม",
+        }
+      : {
+          archive: "Conference Archive",
+          heading: "Climate Finance & Risk",
+          date: "Dates",
+          venue: "Venue",
+          format: "Format",
+          organizer: "Organiser",
+          source: "Official conference site",
+        };
+
+    return `
+      ${renderHero({
+        eyebrow: page.eyebrow,
+        title: page.title,
+        subtitle: page.subtitle,
+        body: page.body,
+      })}
+
+      <section class="section conference-section">
+        ${renderSectionHeading(labels.archive, labels.heading, page.overview)}
+        <div class="conference-list">
+          ${page.events
+            .map(
+              (event, index) => `
+                <article class="conference-entry" data-reveal style="--delay: ${index * 80}ms">
+                  <div class="conference-year-block">
+                    <span class="conference-year">${escapeHtml(event.year)}</span>
+                    <span class="conference-status">${escapeHtml(event.status)}</span>
+                  </div>
+                  <div class="conference-content">
+                    <h2 class="conference-title">${escapeHtml(event.title)}</h2>
+                    <p class="conference-subtitle">${escapeHtml(event.subtitle)}</p>
+                    <p class="conference-summary">${escapeHtml(event.summary)}</p>
+                    <dl class="conference-meta">
+                      <div>
+                        <dt>${escapeHtml(labels.date)}</dt>
+                        <dd>${escapeHtml(event.dates)}</dd>
+                      </div>
+                      <div>
+                        <dt>${escapeHtml(labels.venue)}</dt>
+                        <dd>${escapeHtml(event.venue)}</dd>
+                      </div>
+                      <div>
+                        <dt>${escapeHtml(labels.format)}</dt>
+                        <dd>${escapeHtml(event.format)}</dd>
+                      </div>
+                      <div>
+                        <dt>${escapeHtml(labels.organizer)}</dt>
+                        <dd>${escapeHtml(event.organizer)}</dd>
+                      </div>
+                    </dl>
+                  </div>
+                  <a class="conference-link" href="${event.sourceHref}" target="_blank" rel="noreferrer noopener">
+                    <span>${escapeHtml(labels.source)}</span>
+                    <span aria-hidden="true">↗</span>
+                  </a>
+                </article>
+              `,
+            )
+            .join("")}
         </div>
       </section>
+    `;
+  }
+
+  function renderJobDirectory() {
+    const listings = content.quantJobs[state.lang].listings;
+    const labels =
+      state.lang === "th"
+        ? {
+            eyebrow: "วิชาชีพ",
+            title: "ค้นหาตำแหน่งงาน",
+            copy: "ค้นหาและกรองตำแหน่งงานด้าน quantitative finance และ financial engineering จากฐานข้อมูลของสมาคม",
+            search: "ค้นหาชื่อตำแหน่ง บริษัท หรือทักษะ",
+            employer: "บริษัททั้งหมด",
+            location: "สถานที่ทั้งหมด",
+            category: "กลุ่มงานทั้งหมด",
+            skill: "ทักษะทั้งหมด",
+            reset: "ล้างตัวกรอง",
+            results: "ตำแหน่งงาน",
+            empty: "ไม่พบตำแหน่งงานที่ตรงกับเงื่อนไข",
+          }
+        : {
+            eyebrow: "Career",
+            title: "Job Directory",
+            copy: "Search and filter quantitative-finance and financial-engineering opportunities in the association database.",
+            search: "Search role, employer, or skill",
+            employer: "All employers",
+            location: "All locations",
+            category: "All job categories",
+            skill: "All skills",
+            reset: "Clear filters",
+            results: "jobs",
+            empty: "No jobs match the selected filters.",
+          };
+
+    const employers = uniqueJobValues(listings.map((item) => item.employerShort));
+    const locations = jobMarketOrder.map((market) => ({
+      value: market,
+      label: jobMarketLabels[state.lang][market],
+    }));
+    const jobCategories = jobCategoryOrder.map((category) => ({
+      value: category,
+      label: localizeJobCategory(category, state.lang),
+    }));
+    const skills = uniqueJobValues(
+      listings.flatMap((item) => (item.skills || []).map((skill) => skill.label)),
+    );
+
+    return `
+      <section class="section job-directory-section">
+        ${renderSectionHeading(labels.eyebrow, labels.title, labels.copy)}
+        <div class="job-filter-panel" data-reveal>
+          <label class="job-filter-field job-filter-search">
+            <span>${escapeHtml(labels.search)}</span>
+            <input id="job-search" type="search" placeholder="${escapeHtml(labels.search)}" autocomplete="off">
+          </label>
+          ${renderJobFilter("job-employer-filter", labels.employer, employers)}
+          ${renderJobFilter("job-location-filter", labels.location, locations)}
+          ${renderJobFilter("job-category-filter", labels.category, jobCategories)}
+          ${renderJobFilter("job-skill-filter", labels.skill, skills)}
+          <button class="job-filter-reset" id="job-filter-reset" type="button">${escapeHtml(labels.reset)}</button>
+        </div>
+        <div class="job-directory-summary" aria-live="polite">
+          <strong id="job-result-count">${listings.length}</strong>
+          <span>${escapeHtml(labels.results)}</span>
+        </div>
+        <div class="job-directory-list" id="job-directory-results">
+          ${listings.map((item, index) => renderDirectoryJob(item, index)).join("")}
+        </div>
+        <p class="job-directory-empty" id="job-directory-empty" hidden>${escapeHtml(labels.empty)}</p>
+      </section>
+    `;
+  }
+
+  function renderJobFilter(id, label, options) {
+    return `
+      <label class="job-filter-field">
+        <span>${escapeHtml(label)}</span>
+        <select id="${id}">
+          <option value="">${escapeHtml(label)}</option>
+          ${options
+            .map((option) => {
+              const value = typeof option === "string" ? option : option.value;
+              const optionLabel = typeof option === "string" ? option : option.label;
+              return `<option value="${escapeHtml(value)}">${escapeHtml(optionLabel)}</option>`;
+            })
+            .join("")}
+        </select>
+      </label>
+    `;
+  }
+
+  function uniqueJobValues(values) {
+    return [...new Set(values.filter(Boolean))].sort((left, right) =>
+      left.localeCompare(right, state.lang === "th" ? "th" : "en"),
+    );
+  }
+
+  function renderDirectoryJob(item, index) {
+    const facts = [item.jobCategory, item.location, item.employmentType, item.team].filter(Boolean);
+    const detailLabel = state.lang === "th" ? "รายละเอียดตำแหน่ง" : "Job details";
+    const responsibilityLabel = state.lang === "th" ? "หน้าที่ความรับผิดชอบ" : "Responsibilities";
+    const qualificationLabel = state.lang === "th" ? "คุณสมบัติ" : "Qualifications";
+    const searchText = [
+      item.title,
+      item.employer,
+      item.employerShort,
+      item.searchAliases,
+      ...facts,
+      ...(item.skills || []).map((skill) => skill.label),
+    ]
+      .join(" ")
+      .toLocaleLowerCase();
+
+    return `
+      <article
+        class="job-directory-card"
+        data-reveal
+        data-job-search="${escapeHtml(searchText)}"
+        data-job-employer="${escapeHtml(item.employerShort)}"
+        data-job-location="${escapeHtml(item.locationMarketCode || inferJobMarket(item.location, item.location))}"
+        data-job-category="${escapeHtml(item.jobCategoryCode || "")}"
+        data-job-skills="${escapeHtml((item.skills || []).map((skill) => skill.label).join("|"))}"
+        style="--delay: ${(index % 10) * 45}ms"
+      >
+        <div class="job-directory-logo">
+          <img src="${escapeHtml(item.logoSrc)}" alt="${escapeHtml(item.employerShort)} logo">
+        </div>
+        <div class="job-directory-body">
+          <div class="job-directory-meta">
+            <p class="job-directory-employer">${escapeHtml(item.employer)}</p>
+            ${renderJobPublishedDate(item.publishedDate, item.publishedDateKind)}
+          </div>
+          <h2>${escapeHtml(item.title)}</h2>
+          <div class="job-facts">${facts.map((fact) => `<span>${escapeHtml(fact)}</span>`).join("")}</div>
+          <div class="job-skill-list" aria-label="${escapeHtml(
+            state.lang === "th" ? "ทักษะที่ต้องการ" : "Requested skills",
+          )}">
+            ${(item.skills || [])
+              .map(
+                (skill) =>
+                  `<span class="job-skill job-skill-${skill.tone}" title="${escapeHtml(skill.localizedLabel || skill.label)}">${escapeHtml(skill.label)}</span>`,
+              )
+              .join("")}
+          </div>
+          <details class="job-details job-directory-details">
+            <summary>${escapeHtml(detailLabel)}</summary>
+            <div class="job-detail-grid">
+              <div class="job-detail-block">
+                <h4>${escapeHtml(responsibilityLabel)}</h4>
+                <ul>${item.responsibilities.map((entry) => `<li>${escapeHtml(entry)}</li>`).join("")}</ul>
+              </div>
+              <div class="job-detail-block">
+                <h4>${escapeHtml(qualificationLabel)}</h4>
+                <ul>${item.qualifications.map((entry) => `<li>${escapeHtml(entry)}</li>`).join("")}</ul>
+              </div>
+            </div>
+          </details>
+        </div>
+        <a class="job-directory-action" href="${escapeHtml(item.href)}" target="_blank" rel="noreferrer noopener">
+          ${escapeHtml(state.lang === "th" ? "ดูประกาศ" : "View job")} <span aria-hidden="true">↗</span>
+        </a>
+      </article>
     `;
   }
 
@@ -2254,7 +2268,7 @@
       <section class="section">
         <div class="overview-grid">
           <figure class="image-panel emblem-panel" data-reveal>
-            <img src="assets/emblem.png" alt="${escapeHtml(state.lang === "th" ? "ตราสัญลักษณ์สมาคม TQF" : "TQF association emblem")}" class="section-image emblem-image">
+            <img src="assets/emblem.png?v=20261001-white" alt="${escapeHtml(state.lang === "th" ? "ตราสัญลักษณ์สมาคม TQF" : "TQF association emblem")}" class="section-image emblem-image">
             <figcaption class="image-caption">${escapeHtml(state.lang === "th" ? "ตราสัญลักษณ์ของสมาคม" : "Association emblem")}</figcaption>
           </figure>
           <div class="content-card" data-reveal style="--delay: 110ms">
@@ -2324,23 +2338,18 @@
         body: page.body,
         panelTitle: page.panelTitle,
         panelBody: page.panelBody,
-        meta: [
-          [langUi.committeeMembers, pad(page.members.length)],
-          [langUi.leadership, pad(leadership.length)],
-          [langUi.committee, pad(committee.length)],
-        ],
       })}
 
-      <section class="section">
+      <section class="section board-section board-section-leadership">
         ${renderSectionHeading(langUi.leadership, langUi.leadershipTitle, langUi.leadershipCopy)}
-        <div class="members-grid">
-          ${leadership.map((member, index) => renderMemberCard(member, index)).join("")}
+        <div class="members-grid board-grid board-grid-leadership">
+          ${leadership.map((member, index) => renderMemberCard(member, index, true)).join("")}
         </div>
       </section>
 
-      <section class="section">
+      <section class="section board-section">
         ${renderSectionHeading(langUi.committee, langUi.committeeTitle, langUi.committeeCopy)}
-        <div class="members-grid">
+        <div class="members-grid board-grid">
           ${committee
             .map((member, index) => renderMemberCard(member, leadership.length + index))
             .join("")}
@@ -2525,7 +2534,7 @@
         <div class="legal-layout">
           <aside class="legal-card sticky" data-reveal>
             <figure class="image-panel emblem-panel compact-emblem">
-              <img src="assets/emblem.png" alt="${escapeHtml(state.lang === "th" ? "ตราสัญลักษณ์สมาคม TQF" : "TQF association emblem")}" class="section-image emblem-image">
+              <img src="assets/emblem.png?v=20261001-white" alt="${escapeHtml(state.lang === "th" ? "ตราสัญลักษณ์สมาคม TQF" : "TQF association emblem")}" class="section-image emblem-image">
             </figure>
             <span class="card-kicker">${escapeHtml(langUi.sectionIndex)}</span>
             <h2 class="legal-title">${escapeHtml(langUi.sectionIndex)}</h2>
@@ -2586,16 +2595,24 @@
     `;
   }
 
-  function renderHero({ eyebrow, title, subtitle, body, panelTitle = "", panelBody = "", meta = [] }) {
+  function renderHero({ eyebrow, title, subtitle, body }) {
+    const normalizedTitle = title.trim().toLocaleLowerCase();
+    const normalizedEyebrow = (eyebrow || "").trim().toLocaleLowerCase();
+    const showEyebrow = normalizedEyebrow && normalizedEyebrow !== normalizedTitle;
+    const showSubtitle =
+      subtitle &&
+      subtitle.trim().toLocaleLowerCase() !== normalizedTitle &&
+      subtitle.trim().toLocaleLowerCase() !== normalizedEyebrow;
+
     return `
       <section class="hero">
         <article class="hero-panel" data-reveal>
           <span class="hero-watermark">TQF</span>
           <div class="hero-layout">
             <div class="hero-copy">
-              <span class="eyebrow">${escapeHtml(eyebrow)}</span>
+              ${showEyebrow ? `<span class="eyebrow">${escapeHtml(eyebrow)}</span>` : ""}
               <h1 class="display-title">${escapeHtml(title)}</h1>
-              <p class="display-subtitle">${escapeHtml(subtitle)}</p>
+              ${showSubtitle ? `<p class="display-subtitle">${escapeHtml(subtitle)}</p>` : ""}
               <p class="lead">${escapeHtml(body)}</p>
               <div class="hero-actions">
                 <a class="primary-button" href="mailto:${escapeHtml(content.site[state.lang].email)}">
@@ -2606,34 +2623,6 @@
                 </a>
               </div>
             </div>
-            ${
-              panelTitle || meta.length
-                ? `
-                  <aside class="side-panel hero-summary" data-reveal style="--delay: 90ms">
-                    <span class="panel-label">${escapeHtml(state.lang === "th" ? "ข้อมูลสรุป" : "Summary")}</span>
-                    ${panelTitle ? `<h2 class="panel-title">${escapeHtml(panelTitle)}</h2>` : ""}
-                    ${
-                      meta.length
-                        ? `
-                          <div class="meta-list hero-meta-list">
-                            ${meta
-                              .map(
-                                ([label, value]) => `
-                                  <div class="meta-item">
-                                    <span class="meta-label">${escapeHtml(label)}</span>
-                                    <span class="meta-value">${escapeHtml(value)}</span>
-                                  </div>
-                                `,
-                              )
-                              .join("")}
-                          </div>
-                        `
-                        : ""
-                    }
-                  </aside>
-                `
-                : ""
-            }
           </div>
         </article>
       </section>
@@ -2732,8 +2721,70 @@
     `;
   }
 
+  function renderJobListing(item, index) {
+    const responsibilityLabel = state.lang === "th" ? "หน้าที่ความรับผิดชอบ" : "Responsibilities";
+    const qualificationLabel = state.lang === "th" ? "คุณสมบัติ" : "Qualifications";
+    const sourceLabel = state.lang === "th" ? "ดูประกาศต้นฉบับ" : "View original post";
+    const detailLabel = state.lang === "th" ? "รายละเอียดตำแหน่ง" : "Job details";
+    const facts = [item.jobCategory, item.location, item.employmentType, item.team].filter(Boolean);
+
+    return `
+      <article class="job-card" data-reveal style="--delay: ${index * 80}ms">
+        <div class="job-logo-wrap">
+          <img src="${escapeHtml(item.logoSrc)}" alt="${escapeHtml(item.employerShort)} logo" class="job-logo">
+        </div>
+        <div class="job-card-body">
+          <div class="job-employer">
+            <span class="job-status">${escapeHtml(item.status)}</span>
+            <p class="job-employer-name">${escapeHtml(item.employer)}</p>
+            ${renderJobPublishedDate(item.publishedDate, item.publishedDateKind)}
+          </div>
+          <div class="job-heading">
+            <h3 class="job-title">${escapeHtml(item.title)}</h3>
+            <div class="job-facts">
+              ${facts.map((fact) => `<span>${escapeHtml(fact)}</span>`).join("")}
+            </div>
+          </div>
+          <p class="job-summary">${escapeHtml(item.summary)}</p>
+          ${
+            item.skills?.length
+              ? `
+                <div class="job-skill-list" aria-label="${escapeHtml(
+                  state.lang === "th" ? "ทักษะที่ต้องการ" : "Requested skills",
+                )}">
+                  ${item.skills
+                    .map(
+                      (skill) =>
+                        `<span class="job-skill job-skill-${skill.tone}" title="${escapeHtml(skill.localizedLabel || skill.label)}">${escapeHtml(skill.label)}</span>`,
+                    )
+                    .join("")}
+                </div>
+              `
+              : ""
+          }
+          <details class="job-details">
+            <summary>${escapeHtml(detailLabel)}</summary>
+            <div class="job-detail-grid">
+              <div class="job-detail-block">
+                <h4>${escapeHtml(responsibilityLabel)}</h4>
+                <ul>${item.responsibilities.map((entry) => `<li>${escapeHtml(entry)}</li>`).join("")}</ul>
+              </div>
+              <div class="job-detail-block">
+                <h4>${escapeHtml(qualificationLabel)}</h4>
+                <ul>${item.qualifications.map((entry) => `<li>${escapeHtml(entry)}</li>`).join("")}</ul>
+              </div>
+            </div>
+          </details>
+          <a class="job-source-link" href="${escapeHtml(item.href)}" target="_blank" rel="noreferrer noopener">${escapeHtml(sourceLabel)} ↗</a>
+        </div>
+      </article>
+    `;
+  }
+
   function renderBookSeries() {
     const page = content.bookSeries[state.lang];
+    const textbooks = page.publications.filter((item) => item.category === "textbook");
+    const books = page.publications.filter((item) => item.category !== "textbook");
 
     return `
       ${renderHero({
@@ -2750,44 +2801,94 @@
         ],
       })}
 
-      <section class="section">
-        ${renderSectionHeading(
-          state.lang === "th" ? "ชุดหนังสือดาวน์โหลด" : "Downloadable Series",
-          page.title,
-          page.overview,
-        )}
+      ${renderBookCategory({
+        eyebrow: state.lang === "th" ? "ชุดตำราวิชาการ" : "Academic Series",
+        title: state.lang === "th" ? "ตำราเรียน" : "Textbooks",
+        copy:
+          state.lang === "th"
+            ? "ตำราและคู่มือสำหรับใช้ประกอบการเรียนรู้และวางแผนพัฒนาทักษะตามกรอบ Quant Pathway ของ TQF"
+            : "Academic manuals and study resources supporting structured learning through the TQF Quant Pathway.",
+        items: textbooks,
+        variant: "textbook",
+      })}
+
+      ${renderBookCategory({
+        eyebrow: state.lang === "th" ? "รายการหนังสือ" : "Book Collection",
+        title: state.lang === "th" ? "หนังสือ" : "Books",
+        copy:
+          state.lang === "th"
+            ? "หนังสือด้านการเงินเชิงปริมาณ คณิตศาสตร์การเงิน และเทคโนโลยีที่คัดเลือกเพื่อนำเสนอแก่สมาชิกและผู้สนใจ"
+            : "Selected books on quantitative finance, financial mathematics, and technology for members and interested readers.",
+        items: books,
+        variant: "book",
+      })}
+    `;
+  }
+
+  function renderBookCategory({ eyebrow, title, copy, items, variant }) {
+    if (!items.length) return "";
+
+    return `
+      <section class="section book-category-panel book-category-${variant}">
+        ${renderSectionHeading(eyebrow, title, copy)}
         <div class="publication-grid">
-          ${page.publications
-            .map(
-              (item, index) => `
-                <article class="publication-card" data-reveal style="--delay: ${index * 90}ms">
-                  <img src="${item.coverSrc}" alt="${escapeHtml(item.title)} cover" class="publication-cover">
-                  <div class="publication-body">
-                    <span class="card-kicker">${escapeHtml(item.kicker)}</span>
-                    <h3 class="card-title">${escapeHtml(item.title)}</h3>
-                    <p class="card-copy">${escapeHtml(item.description)}</p>
-                    <div class="publication-meta">
-                      <span>${escapeHtml(item.format)}</span>
-                      <span>${escapeHtml(state.lang === "th" ? "อ้างอิงจาก TQF Quant Pathway" : "Based on TQF Quant Pathway")}</span>
-                    </div>
-                    <div class="publication-actions">
-                      <a class="primary-button" href="${item.downloadHref}" download>
-                        ${escapeHtml(state.lang === "th" ? "ดาวน์โหลด PDF" : "Download PDF")}
-                      </a>
-                      <a class="secondary-button" href="${item.onlineHref}">
-                        ${escapeHtml(state.lang === "th" ? "อ่านหน้าเนื้อหา" : "Read source page")}
-                      </a>
-                    </div>
-                    <a class="publication-source" href="${item.sourceHref}" target="_blank" rel="noreferrer noopener">
-                      ${escapeHtml(state.lang === "th" ? "แหล่งที่มา: TQF Quant Pathway" : "Source: TQF Quant Pathway")}
-                    </a>
-                  </div>
-                </article>
-              `,
-            )
-            .join("")}
+          ${items.map((item, index) => renderBookCard(item, index)).join("")}
         </div>
       </section>
+    `;
+  }
+
+  function renderBookCard(item, index) {
+    return `
+      <article class="publication-card" data-reveal style="--delay: ${index * 90}ms">
+        <img src="${item.coverSrc}" alt="${escapeHtml(item.title)} cover" class="publication-cover">
+        <div class="publication-body">
+          <span class="card-kicker">${escapeHtml(item.kicker)}</span>
+          <h3 class="card-title">${escapeHtml(item.title)}</h3>
+          <p class="card-copy">${escapeHtml(item.description)}</p>
+          <div class="publication-meta">
+            ${item.authors ? `<span>${escapeHtml(item.authors)}</span>` : ""}
+            <span>${escapeHtml(item.format)}</span>
+            <span>${escapeHtml(item.referenceLabel || (state.lang === "th" ? "อ้างอิงจาก TQF Quant Pathway" : "Based on TQF Quant Pathway"))}</span>
+          </div>
+          ${
+            item.downloadHref || item.onlineHref
+              ? `
+                <div class="publication-actions">
+                  ${
+                    item.downloadHref
+                      ? `
+                        <a class="primary-button" href="${item.downloadHref}" download>
+                          ${escapeHtml(state.lang === "th" ? "ดาวน์โหลด PDF" : "Download PDF")}
+                        </a>
+                      `
+                      : ""
+                  }
+                  ${
+                    item.onlineHref
+                      ? `
+                        <a class="secondary-button" href="${item.onlineHref}">
+                          ${escapeHtml(state.lang === "th" ? "อ่านหน้าเนื้อหา" : "Read source page")}
+                        </a>
+                      `
+                      : ""
+                  }
+                </div>
+              `
+              : ""
+          }
+          ${item.availabilityNote ? `<p class="publication-availability">${escapeHtml(item.availabilityNote)}</p>` : ""}
+          ${
+            item.sourceHref
+              ? `
+                <a class="publication-source" href="${item.sourceHref}" target="_blank" rel="noreferrer noopener">
+                  ${escapeHtml(state.lang === "th" ? "แหล่งที่มา: TQF Quant Pathway" : "Source: TQF Quant Pathway")}
+                </a>
+              `
+              : ""
+          }
+        </div>
+      </article>
     `;
   }
 
@@ -2875,9 +2976,12 @@
   }
 
   function renderSectionHeading(eyebrow, title, copy) {
+    const showEyebrow =
+      eyebrow && eyebrow.trim().toLocaleLowerCase() !== title.trim().toLocaleLowerCase();
+
     return `
       <div class="section-heading" data-reveal>
-        <span class="eyebrow">${escapeHtml(eyebrow)}</span>
+        ${showEyebrow ? `<span class="eyebrow">${escapeHtml(eyebrow)}</span>` : ""}
         <h2 class="section-title">${escapeHtml(title)}</h2>
         <p class="section-copy">${escapeHtml(copy)}</p>
       </div>
@@ -2892,7 +2996,7 @@
         </div>
         <div class="activity-meta">
           <span class="card-kicker">${escapeHtml(item.category)}</span>
-          <span class="activity-date">${escapeHtml(formatDate(item.date))}</span>
+          <span class="activity-date">${escapeHtml(item.dateLabel || formatDate(item.date))}</span>
         </div>
         <div class="activity-body">
           <h3 class="card-title">${escapeHtml(item.title)}</h3>
@@ -2912,7 +3016,7 @@
         <div class="activity-archive-main">
           <div class="activity-meta">
             <span class="card-kicker">${escapeHtml(item.category)}</span>
-            <span class="activity-date">${escapeHtml(formatDate(item.date))}</span>
+            <span class="activity-date">${escapeHtml(item.dateLabel || formatDate(item.date))}</span>
           </div>
           <div class="activity-body">
             <h3 class="card-title">${escapeHtml(item.title)}</h3>
@@ -2946,7 +3050,15 @@
     `;
   }
 
-  function isUpcomingActivity(dateValue) {
+  function isUpcomingActivity(dateValue, explicitUpcoming = false) {
+    if (explicitUpcoming) {
+      return true;
+    }
+
+    if (!dateValue) {
+      return false;
+    }
+
     return new Date(`${dateValue}T23:59:59`).getTime() >= Date.now();
   }
 
@@ -2968,7 +3080,7 @@
     `;
   }
 
-  function renderMemberCard(member, index) {
+  function renderMemberCard(member, index, isLeadership = false) {
     const visual = member.imageSrc
       ? `<img src="${member.imageSrc}" alt="${escapeHtml(member.name)}" class="member-photo">`
       : member.initials
@@ -2983,15 +3095,15 @@
           `;
 
     return `
-      <article class="member-card" data-reveal style="--delay: ${(index % 3) * 70}ms">
+      <article class="member-card${isLeadership ? " member-card-leadership" : ""}" data-reveal style="--delay: ${(index % 3) * 70}ms">
         <div class="member-media">
           ${visual}
         </div>
-        <div class="member-role">${escapeHtml(member.role)}</div>
-        <h3 class="member-name">${escapeHtml(member.name)}</h3>
-        <p class="member-meta">
-          ${member.qualifications ? `${escapeHtml(state.lang === "th" ? "คุณวุฒิ" : "Qualifications")}: ${escapeHtml(member.qualifications)}` : escapeHtml(ui[state.lang].qualificationsMissing)}
-        </p>
+        <div class="member-profile">
+          <h3 class="member-name">${escapeHtml(member.name)}</h3>
+          <div class="member-role">${escapeHtml(member.role)}</div>
+          ${member.qualifications ? `<p class="member-meta"><span>${escapeHtml(state.lang === "th" ? "คุณวุฒิ" : "Qualifications")}</span>${escapeHtml(member.qualifications)}</p>` : ""}
+        </div>
       </article>
     `;
   }
@@ -3065,7 +3177,56 @@
       });
     });
 
+    if (slug === "job-directory") {
+      bindJobDirectoryFilters();
+    }
+
     window.onresize = handleResize;
+  }
+
+  function bindJobDirectoryFilters() {
+    const search = document.getElementById("job-search");
+    const employer = document.getElementById("job-employer-filter");
+    const location = document.getElementById("job-location-filter");
+    const category = document.getElementById("job-category-filter");
+    const skill = document.getElementById("job-skill-filter");
+    const reset = document.getElementById("job-filter-reset");
+    const count = document.getElementById("job-result-count");
+    const empty = document.getElementById("job-directory-empty");
+    const cards = Array.from(document.querySelectorAll(".job-directory-card"));
+
+    const applyFilters = () => {
+      const query = search.value.trim().toLocaleLowerCase();
+      let visibleCount = 0;
+
+      cards.forEach((card) => {
+        const matches =
+          (!query || card.dataset.jobSearch.includes(query)) &&
+          (!employer.value || card.dataset.jobEmployer === employer.value) &&
+          (!location.value || card.dataset.jobLocation === location.value) &&
+          (!category.value || card.dataset.jobCategory === category.value) &&
+          (!skill.value || card.dataset.jobSkills.split("|").includes(skill.value));
+
+        card.hidden = !matches;
+        if (matches) visibleCount += 1;
+      });
+
+      count.textContent = String(visibleCount);
+      empty.hidden = visibleCount !== 0;
+    };
+
+    search.addEventListener("input", applyFilters);
+    [employer, location, category, skill].forEach((control) =>
+      control.addEventListener("change", applyFilters),
+    );
+    reset.addEventListener("click", () => {
+      search.value = "";
+      [employer, location, category, skill].forEach((control) => {
+        control.value = "";
+      });
+      applyFilters();
+      search.focus();
+    });
   }
 
   function handleResize() {
@@ -3115,6 +3276,20 @@
       month: "long",
       year: "numeric",
     }).format(new Date(`${value}T12:00:00`));
+  }
+
+  function renderJobPublishedDate(value, kind = "published") {
+    if (!value) return "";
+
+    const label = kind === "verified"
+      ? (state.lang === "th" ? "ตรวจสอบล่าสุด" : "Last verified")
+      : (state.lang === "th" ? "เผยแพร่" : "Published");
+    return `
+      <time class="job-published" datetime="${escapeHtml(value)}">
+        <span class="job-date-mark" aria-hidden="true"></span>
+        ${escapeHtml(label)} ${escapeHtml(formatDate(value))}
+      </time>
+    `;
   }
 
   function escapeHtml(value) {

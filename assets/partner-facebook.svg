@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 96" role="img" aria-labelledby="title">
+  <title id="title">Facebook page</title>
+  <rect width="240" height="96" rx="8" fill="#f4f7fb"/>
+  <rect x="18" y="16" width="64" height="64" rx="10" fill="#1877f2"/>
+  <text x="50" y="66" fill="#ffffff" font-family="Arial, sans-serif" font-size="54" font-weight="700" text-anchor="middle">f</text>
+  <text x="99" y="45" fill="#12395f" font-family="Arial, sans-serif" font-size="19" font-weight="700">FACEBOOK</text>
+  <text x="99" y="66" fill="#617083" font-family="Arial, sans-serif" font-size="12" letter-spacing="1.6">COMMUNITY PAGE</text>
+</svg>

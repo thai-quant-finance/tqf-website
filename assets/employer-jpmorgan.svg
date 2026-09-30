@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 96" role="img" aria-labelledby="title">
+  <title id="title">J.P. Morgan</title>
+  <rect width="360" height="96" fill="#ffffff"/>
+  <text x="180" y="58" text-anchor="middle" font-family="Georgia, serif" font-size="34" font-weight="700" fill="#1f2f46">J.P. MORGAN</text>
+  <path d="M44 71h272" stroke="#a67c2e" stroke-width="3"/>
+</svg>

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 96" role="img" aria-labelledby="title">
+  <title id="title">Selini Capital</title>
+  <rect width="360" height="96" fill="#ffffff"/>
+  <circle cx="52" cy="48" r="24" fill="#102b46"/>
+  <path d="M38 48c8-14 20-14 28 0-8 14-20 14-28 0Z" fill="none" stroke="#c8a45e" stroke-width="4"/>
+  <text x="90" y="55" font-family="Arial, sans-serif" font-size="28" font-weight="700" fill="#102b46">SELINI CAPITAL</text>
+</svg>

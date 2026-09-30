@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 96" role="img" aria-labelledby="title">
+  <title id="title">ThaiBMA</title>
+  <rect width="320" height="96" rx="8" fill="#fff"/>
+  <path d="M31 24h17l13 24-13 24H31l13-24z" fill="#163f6b"/>
+  <path d="M52 24h17l13 24-13 24H52l13-24z" fill="#b89645" opacity=".9"/>
+  <text x="96" y="58" fill="#163f6b" font-family="Arial, sans-serif" font-size="31" font-weight="700">ThaiBMA</text>
+</svg>

@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 80" role="img" aria-labelledby="title">
+  <title id="title">SCB Asset Management</title>
+  <circle cx="41" cy="40" r="25" fill="#51247a"/><path d="M27 40c8-13 20-17 29-7-5 16-17 23-29 7Z" fill="#f5b335"/>
+  <text x="78" y="38" fill="#51247a" font-family="Arial, sans-serif" font-size="26" font-weight="700">SCBAM</text>
+  <text x="79" y="57" fill="#4b5563" font-family="Arial, sans-serif" font-size="12">ASSET MANAGEMENT</text>
+</svg>
