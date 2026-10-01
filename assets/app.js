@@ -1518,21 +1518,9 @@
             ? "ข่าวสาร ประกาศ และความร่วมมือล่าสุดที่เกี่ยวข้องกับภารกิจของสมาคม"
             : "Latest news, announcements, and collaborations related to the association's mission.",
         )}
-        <div class="site-map-list home-feed-list">
+        <div class="activity-grid activity-grid-featured">
           ${newsItems
-            .map((item, index) =>
-              renderHomeFeedItem(
-                {
-                  href: item.href,
-                  marker: pad(index + 1),
-                  kicker: `${item.category} · ${formatDate(item.date)}`,
-                  title: item.title,
-                  copy: item.copy,
-                },
-                index,
-                state.lang === "th" ? "อ่านข่าว" : "Read news",
-              ),
-            )
+            .map((item, index) => renderFeaturedActivityCard(item, index))
             .join("")}
         </div>
         ${renderHomeArchiveLink("news.html", state.lang === "th" ? "ดูข่าวสารทั้งหมด" : "View all news")}
@@ -1577,8 +1565,6 @@
 
   function renderActivities() {
     const page = content.activities[state.lang];
-    const upcomingItems = page.items.filter((item) => isUpcomingActivity(item.date, item.upcoming));
-    const archiveItems = page.items.filter((item) => !isUpcomingActivity(item.date, item.upcoming));
 
     return `
       ${renderHero({
@@ -1598,46 +1584,13 @@
 
       <section class="section">
         ${renderSectionHeading(
-          state.lang === "th" ? "กิจกรรมที่กำลังจะมาถึง" : "Upcoming Events",
-          state.lang === "th" ? "รายการอีเวนต์ที่เปิดรับหรือกำหนดจัดในลำดับถัดไป" : "Events scheduled or announced for the next period",
+          state.lang === "th" ? "รายการกิจกรรม" : "Activity Directory",
+          state.lang === "th" ? "กิจกรรมทั้งหมด" : "All Activities",
           state.lang === "th"
-            ? "ส่วนนี้ใช้แสดงกิจกรรมที่ยังไม่ถึงวันจัดงาน เพื่อให้ติดตามกำหนดการ เวลา และสถานที่ได้จากหน้าเดียว"
-            : "This section highlights announced events that are still upcoming so visitors can review schedule, time, and venue in one place.",
+            ? "ค้นหากิจกรรมตามชื่อ ประเภท และปี พร้อมตรวจสอบวัน เวลา และสถานที่จากการ์ดแต่ละรายการ"
+            : "Search activities by title, type, and year, with date, time, and venue shown on every card.",
         )}
-        ${
-          upcomingItems.length
-            ? `
-              <div class="activity-grid activity-grid-featured">
-                ${upcomingItems.map((item, index) => renderFeaturedActivityCard(item, index)).join("")}
-              </div>
-            `
-            : `
-              <article class="content-card" data-reveal>
-                <span class="card-kicker">${escapeHtml(state.lang === "th" ? "สถานะ" : "Status")}</span>
-                <h3 class="card-title">${escapeHtml(
-                  state.lang === "th" ? "ยังไม่มีประกาศกิจกรรมที่กำลังจะมาถึง" : "No upcoming events announced",
-                )}</h3>
-                <p class="card-copy">${escapeHtml(
-                  state.lang === "th"
-                    ? "ขณะนี้ยังไม่มีรายการอีเวนต์ในอนาคตจากข้อมูลกิจกรรมสาธารณะที่แสดงบนเว็บไซต์ เมื่อมีประกาศใหม่ รายการจะถูกแสดงในส่วนนี้"
-                    : "There are currently no future event items in the public activity list shown on this website. New announcements will appear in this section when available.",
-                )}</p>
-              </article>
-            `
-        }
-      </section>
-
-      <section class="section">
-        ${renderSectionHeading(
-          state.lang === "th" ? "รายการกิจกรรม" : "Event Archive",
-          state.lang === "th" ? "กิจกรรมที่ผ่านมาและรายการอีเวนต์" : "Past events and published event items",
-          state.lang === "th"
-            ? "หน้ากิจกรรมรวบรวมรายการอีเวนต์ในรูปแบบลิสต์ เพื่อให้ค้นหาวันที่ เวลา และสถานที่ได้สะดวก"
-            : "This page keeps event items in a clean list format so date, time, and location can be reviewed quickly.",
-        )}
-        <div class="activity-list">
-          ${archiveItems.map((item, index) => renderActivityArchiveItem(item, index)).join("")}
-        </div>
+        ${renderContentArchive(page.items)}
       </section>
     `;
   }
@@ -1655,11 +1608,87 @@
 
       <section class="section">
         ${renderSectionHeading(page.eyebrow, page.title, page.overview)}
-        <div class="activity-list">
-          ${page.items.map((item, index) => renderActivityArchiveItem(item, index)).join("")}
-        </div>
+        ${renderContentArchive(page.items)}
       </section>
     `;
+  }
+
+  function renderContentArchive(items) {
+    const categories = [...new Set(items.map((item) => item.category).filter(Boolean))].sort((left, right) =>
+      left.localeCompare(right, state.lang === "th" ? "th" : "en"),
+    );
+    const years = [...new Set(items.map((item) => getContentYear(item)))].sort((left, right) => {
+      if (left === "upcoming") return -1;
+      if (right === "upcoming") return 1;
+      return Number(right) - Number(left);
+    });
+    const labels =
+      state.lang === "th"
+        ? {
+            search: "ค้นหา",
+            searchPlaceholder: "ค้นหาชื่อหรือเนื้อหา",
+            type: "ประเภท",
+            allTypes: "ทุกประเภท",
+            date: "ปี / กำหนดการ",
+            allDates: "ทุกปี",
+            upcoming: "กำลังจะมาถึง",
+            reset: "ล้างตัวกรอง",
+            results: "รายการ",
+            empty: "ไม่พบรายการที่ตรงกับตัวกรอง",
+          }
+        : {
+            search: "Search",
+            searchPlaceholder: "Search title or content",
+            type: "Type",
+            allTypes: "All types",
+            date: "Year / Schedule",
+            allDates: "All years",
+            upcoming: "Upcoming",
+            reset: "Clear filters",
+            results: "items",
+            empty: "No items match the selected filters.",
+          };
+
+    return `
+      <div class="job-filter-panel content-filter-panel" data-reveal>
+        <label class="job-filter-field job-filter-search">
+          <span>${escapeHtml(labels.search)}</span>
+          <input id="content-search" type="search" placeholder="${escapeHtml(labels.searchPlaceholder)}" autocomplete="off">
+        </label>
+        <label class="job-filter-field">
+          <span>${escapeHtml(labels.type)}</span>
+          <select id="content-type-filter">
+            <option value="">${escapeHtml(labels.allTypes)}</option>
+            ${categories.map((category) => `<option value="${escapeHtml(category)}">${escapeHtml(category)}</option>`).join("")}
+          </select>
+        </label>
+        <label class="job-filter-field">
+          <span>${escapeHtml(labels.date)}</span>
+          <select id="content-date-filter">
+            <option value="">${escapeHtml(labels.allDates)}</option>
+            ${years
+              .map(
+                (year) =>
+                  `<option value="${escapeHtml(year)}">${escapeHtml(year === "upcoming" ? labels.upcoming : year)}</option>`,
+              )
+              .join("")}
+          </select>
+        </label>
+        <button class="job-filter-reset" id="content-filter-reset" type="button">${escapeHtml(labels.reset)}</button>
+      </div>
+      <div class="job-directory-summary content-filter-summary" aria-live="polite">
+        <strong id="content-result-count">${items.length}</strong>
+        <span>${escapeHtml(labels.results)}</span>
+      </div>
+      <div class="activity-grid activity-grid-featured content-archive-grid" id="content-archive-results">
+        ${items.map((item, index) => renderFeaturedActivityCard(item, index, true)).join("")}
+      </div>
+      <p class="job-directory-empty" id="content-archive-empty" hidden>${escapeHtml(labels.empty)}</p>
+    `;
+  }
+
+  function getContentYear(item) {
+    return item.date ? String(item.date).slice(0, 4) : "upcoming";
   }
 
   function renderHomeFeedItem(item, index, actionLabel) {
@@ -3014,9 +3043,23 @@
     `;
   }
 
-  function renderFeaturedActivityCard(item, index) {
+  function renderFeaturedActivityCard(item, index, filterable = false) {
+    const filterAttributes = filterable
+      ? `
+        data-content-card
+        data-content-category="${escapeHtml(item.category || "")}"
+        data-content-year="${escapeHtml(getContentYear(item))}"
+        data-content-search="${escapeHtml(
+          [item.title, item.copy, item.category, item.date, item.dateLabel, item.time, item.location]
+            .filter(Boolean)
+            .join(" ")
+            .toLocaleLowerCase(),
+        )}"
+      `
+      : "";
+
     return `
-      <a class="activity-card activity-card-featured" href="${item.href}" data-reveal style="--delay: ${index * 70}ms">
+      <a class="activity-card activity-card-featured" href="${item.href}" ${filterAttributes} data-reveal style="--delay: ${index * 70}ms">
         <div class="activity-image-frame">
           <img src="${item.imageSrc || heroImagePlaceholder}" alt="${escapeHtml(item.title)}" class="activity-image">
         </div>
@@ -3207,6 +3250,10 @@
       bindJobDirectoryFilters();
     }
 
+    if (["activities", "announcements", "news"].includes(slug)) {
+      bindContentArchiveFilters();
+    }
+
     window.onresize = handleResize;
   }
 
@@ -3250,6 +3297,48 @@
       [employer, location, category, skill].forEach((control) => {
         control.value = "";
       });
+      applyFilters();
+      search.focus();
+    });
+  }
+
+  function bindContentArchiveFilters() {
+    const search = document.getElementById("content-search");
+    const type = document.getElementById("content-type-filter");
+    const date = document.getElementById("content-date-filter");
+    const reset = document.getElementById("content-filter-reset");
+    const count = document.getElementById("content-result-count");
+    const empty = document.getElementById("content-archive-empty");
+    const cards = Array.from(document.querySelectorAll("[data-content-card]"));
+
+    if (!search || !type || !date || !reset || !count || !empty) {
+      return;
+    }
+
+    const applyFilters = () => {
+      const query = search.value.trim().toLocaleLowerCase();
+      let visibleCount = 0;
+
+      cards.forEach((card) => {
+        const matches =
+          (!query || card.dataset.contentSearch.includes(query)) &&
+          (!type.value || card.dataset.contentCategory === type.value) &&
+          (!date.value || card.dataset.contentYear === date.value);
+
+        card.hidden = !matches;
+        if (matches) visibleCount += 1;
+      });
+
+      count.textContent = String(visibleCount);
+      empty.hidden = visibleCount !== 0;
+    };
+
+    search.addEventListener("input", applyFilters);
+    [type, date].forEach((control) => control.addEventListener("change", applyFilters));
+    reset.addEventListener("click", () => {
+      search.value = "";
+      type.value = "";
+      date.value = "";
       applyFilters();
       search.focus();
     });

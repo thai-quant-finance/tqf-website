@@ -3294,6 +3294,22 @@ body[data-page="team"] .member-card-leadership:nth-child(5) {
   background: var(--surface-muted);
 }
 
+.content-filter-panel {
+  margin-top: 0.25rem;
+}
+
+.content-filter-summary {
+  margin-bottom: 0.85rem;
+}
+
+.content-archive-grid {
+  align-items: stretch;
+}
+
+[data-content-card][hidden] {
+  display: none !important;
+}
+
 @media (max-width: 720px) {
   .job-filter-search {
     grid-column: auto;
