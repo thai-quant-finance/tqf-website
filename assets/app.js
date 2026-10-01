@@ -1431,12 +1431,11 @@
     const activityItems = content.activities[state.lang].items;
     const trainingPage = content.training[state.lang];
     const articleItems = content.articles[state.lang].items.slice(0, 3);
-    const trainingItems = trainingPage.groups.map((group, index) => ({
-      href: `training.html#${group.id}`,
-      marker: pad(index + 1),
-      kicker: group.label,
-      title: group.title,
-      copy: group.description,
+    const trainingItems = trainingPage.groups.map((group) => ({
+      ...group.items[0],
+      category: group.label,
+      time: group.items[0].kicker,
+      location: group.title,
     }));
 
     return `
@@ -1471,11 +1470,9 @@
             ? "หลักสูตร กรอบการเรียนรู้ และแนวทางพัฒนาทักษะสำหรับสมาชิกและผู้สนใจสายงานการเงินเชิงปริมาณ"
             : "Training, learning frameworks, and professional-development pathways for members and aspiring quantitative-finance practitioners.",
         )}
-        <div class="site-map-list home-feed-list">
+        <div class="activity-grid activity-grid-featured">
           ${trainingItems
-            .map((item, index) =>
-              renderHomeFeedItem(item, index, state.lang === "th" ? "ดูรายละเอียด" : "View details"),
-            )
+            .map((item, index) => renderFeaturedActivityCard(item, index))
             .join("")}
         </div>
         ${renderHomeArchiveLink("training.html", state.lang === "th" ? "ดูข้อมูลการอบรมทั้งหมด" : "View all training information")}
@@ -1613,13 +1610,14 @@
     `;
   }
 
-  function renderContentArchive(items) {
+  function renderContentArchive(items, options = {}) {
     const categories = [...new Set(items.map((item) => item.category).filter(Boolean))].sort((left, right) =>
       left.localeCompare(right, state.lang === "th" ? "th" : "en"),
     );
     const years = [...new Set(items.map((item) => getContentYear(item)))].sort((left, right) => {
-      if (left === "upcoming") return -1;
-      if (right === "upcoming") return 1;
+      const specialOrder = { upcoming: 2, ongoing: 1 };
+      const specialDifference = (specialOrder[right] || 0) - (specialOrder[left] || 0);
+      if (specialDifference) return specialDifference;
       return Number(right) - Number(left);
     });
     const labels =
@@ -1632,6 +1630,7 @@
             date: "ปี / กำหนดการ",
             allDates: "ทุกปี",
             upcoming: "กำลังจะมาถึง",
+            ongoing: "ต่อเนื่อง",
             reset: "ล้างตัวกรอง",
             results: "รายการ",
             empty: "ไม่พบรายการที่ตรงกับตัวกรอง",
@@ -1644,6 +1643,7 @@
             date: "Year / Schedule",
             allDates: "All years",
             upcoming: "Upcoming",
+            ongoing: "Ongoing",
             reset: "Clear filters",
             results: "items",
             empty: "No items match the selected filters.",
@@ -1653,12 +1653,12 @@
       <div class="job-filter-panel content-filter-panel" data-reveal>
         <label class="job-filter-field job-filter-search">
           <span>${escapeHtml(labels.search)}</span>
-          <input id="content-search" type="search" placeholder="${escapeHtml(labels.searchPlaceholder)}" autocomplete="off">
+          <input id="content-search" type="search" placeholder="${escapeHtml(options.searchPlaceholder || labels.searchPlaceholder)}" autocomplete="off">
         </label>
         <label class="job-filter-field">
-          <span>${escapeHtml(labels.type)}</span>
+          <span>${escapeHtml(options.typeLabel || labels.type)}</span>
           <select id="content-type-filter">
-            <option value="">${escapeHtml(labels.allTypes)}</option>
+            <option value="">${escapeHtml(options.allTypesLabel || labels.allTypes)}</option>
             ${categories.map((category) => `<option value="${escapeHtml(category)}">${escapeHtml(category)}</option>`).join("")}
           </select>
         </label>
@@ -1669,7 +1669,9 @@
             ${years
               .map(
                 (year) =>
-                  `<option value="${escapeHtml(year)}">${escapeHtml(year === "upcoming" ? labels.upcoming : year)}</option>`,
+                  `<option value="${escapeHtml(year)}">${escapeHtml(
+                    year === "upcoming" ? labels.upcoming : year === "ongoing" ? labels.ongoing : year,
+                  )}</option>`,
               )
               .join("")}
           </select>
@@ -1688,7 +1690,7 @@
   }
 
   function getContentYear(item) {
-    return item.date ? String(item.date).slice(0, 4) : "upcoming";
+    return item.filterYear || (item.date ? String(item.date).slice(0, 4) : "upcoming");
   }
 
   function renderHomeFeedItem(item, index, actionLabel) {
@@ -2003,7 +2005,15 @@
 
   function renderTraining() {
     const page = content.training[state.lang];
-    const totalItems = page.groups.reduce((sum, group) => sum + group.items.length, 0);
+    const trainingItems = page.groups.flatMap((group) =>
+      group.items.map((item) => ({
+        ...item,
+        category: group.label,
+        time: item.kicker,
+        location: group.title,
+        filterYear: item.date ? "" : "ongoing",
+      })),
+    );
 
     return `
       ${renderHero({
@@ -2013,52 +2023,20 @@
         body: page.body,
       })}
 
-      <nav class="training-category-nav" aria-label="${escapeHtml(
-        state.lang === "th" ? "หมวดการอบรม" : "Training categories",
-      )}" data-reveal>
-        ${page.groups
-          .map(
-            (group, index) => `
-              <a class="training-category-link" href="#${escapeHtml(group.id)}">
-                <span>${pad(index + 1)}</span>
-                <strong>${escapeHtml(group.label)}</strong>
-              </a>
-            `,
-          )
-          .join("")}
-      </nav>
-
-      ${page.groups
-        .map(
-          (group) => `
-            <section class="section training-group" id="${escapeHtml(group.id)}">
-              ${renderSectionHeading(group.label, group.title, group.description)}
-              <div class="site-map-list home-feed-list">
-                ${group.items
-                  .map((item, index) =>
-                    renderHomeFeedItem(
-                      {
-                        ...item,
-                        marker: pad(index + 1),
-                      },
-                      index,
-                      state.lang === "th" ? "ดูรายละเอียด" : "View details",
-                    ),
-                  )
-                  .join("")}
-              </div>
-            </section>
-          `,
-        )
-        .join("")}
-
-      <p class="training-count" data-reveal>
-        ${escapeHtml(
+      <section class="section training-group">
+        ${renderSectionHeading(
+          state.lang === "th" ? "หลักสูตรและกิจกรรม" : "Programs and Events",
+          state.lang === "th" ? "รายการการอบรมทั้งหมด" : "All Training Listings",
           state.lang === "th"
-            ? `รวม ${totalItems} รายการใน 3 หมวดการอบรม`
-            : `${totalItems} entries across three training categories`,
+            ? "ค้นหาการอบรมตามชื่อ ผู้จัดหรือประเภท และปี พร้อมตรวจสอบกำหนดการจากการ์ดแต่ละรายการ"
+            : "Search training by title, provider or type, and year, with schedule information shown on every card.",
         )}
-      </p>
+        ${renderContentArchive(trainingItems, {
+          typeLabel: state.lang === "th" ? "ผู้จัด / ประเภท" : "Provider / Type",
+          allTypesLabel: state.lang === "th" ? "ทุกผู้จัด" : "All providers",
+          searchPlaceholder: state.lang === "th" ? "ค้นหาหลักสูตรหรือกิจกรรม" : "Search programs or events",
+        })}
+      </section>
     `;
   }
 
@@ -3250,7 +3228,7 @@
       bindJobDirectoryFilters();
     }
 
-    if (["activities", "announcements", "news"].includes(slug)) {
+    if (["activities", "announcements", "news", "training"].includes(slug)) {
       bindContentArchiveFilters();
     }
 

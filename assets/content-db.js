@@ -1271,6 +1271,7 @@ window.TQF_DB = {
             items: [
               {
                 kicker: "เส้นทางการเรียนรู้",
+                dateLabel: "ต่อเนื่อง",
                 title: "TQF Quant Pathway",
                 copy: "กรอบทักษะตั้งแต่คณิตศาสตร์ การเงิน และการเขียนโปรแกรม ไปจนถึงหัวข้อเฉพาะทางสำหรับสาย Quant",
                 href: "quant-pathway.html",
@@ -1278,6 +1279,7 @@ window.TQF_DB = {
               },
               {
                 kicker: "เวิร์กช็อป",
+                date: "2025-10-25",
                 title: "Intro to Quant Workshop",
                 copy: "เวิร์กช็อป Portfolio Optimization และ Options Pricing พร้อมกิจกรรม hands-on coding สำหรับนิสิตนักศึกษา",
                 href: "https://www.instagram.com/p/DQE7gHeEs2r/",
@@ -1285,6 +1287,7 @@ window.TQF_DB = {
               },
               {
                 kicker: "แนะแนววิชาชีพ",
+                date: "2026-09-30",
                 title: "ติวฟรีเพื่อเส้นทางอาชีพ Quant Career",
                 copy: "กิจกรรมแนะแนวอาชีพด้าน Quant การพัฒนาแบบจำลอง และการใช้ Monte Carlo simulation ในงานอนุพันธ์",
                 href: "https://www.facebook.com/quantcornerthailand",
@@ -1300,6 +1303,7 @@ window.TQF_DB = {
             items: [
               {
                 kicker: "กิจกรรมที่กำลังจะมาถึง · 7 ต.ค. 2569",
+                date: "2026-10-07",
                 title: "Optimizing Your Quant Finance Resume for Today’s Market",
                 copy: "Career Talk ออนไลน์โดย Rainy Gill ว่าด้วยการวางโครงสร้างเรซูเม่ การนำเสนอทักษะ และข้อผิดพลาดที่ควรหลีกเลี่ยงสำหรับผู้สมัครงานสาย Quant",
                 href: "https://cqfinstitute.org/events/careers-talks/optimizing-your-quant-finance-resume-for-todays-market/",
@@ -1307,6 +1311,8 @@ window.TQF_DB = {
               },
               {
                 kicker: "กิจกรรมที่กำลังจะมาถึง · 4-5 พ.ย. 2569",
+                date: "2026-11-04",
+                dateLabel: "4-5 พฤศจิกายน 2026",
                 title: "Annual Quant Insights Conference",
                 copy: "การประชุมออนไลน์ประจำปีของ CQF Institute ครอบคลุมแนวโน้มล่าสุดด้านการซื้อขาย ทฤษฎีพอร์ตโฟลิโอ ปัญญาประดิษฐ์ และ quantitative finance",
                 href: "https://cqfinstitute.org/events/conferences/annual-quant-insights-conference/",
@@ -1314,6 +1320,7 @@ window.TQF_DB = {
               },
               {
                 kicker: "กิจกรรมที่ผ่านมา · 16 ก.ย. 2569",
+                date: "2026-09-16",
                 title: "AI and Machine Learning in Quant Finance Conference",
                 copy: "การประชุมด้าน AI และ machine learning สำหรับงานการเงินเชิงปริมาณ ครอบคลุม deep learning, portfolio optimization, model risk, LLM interpretability และ quantum computing",
                 href: "https://cqfinstitute.org/events/conferences/ai-and-machine-learning-in-quant-finance/",
@@ -1321,6 +1328,7 @@ window.TQF_DB = {
               },
               {
                 kicker: "กิจกรรมที่ผ่านมา · 3 มิ.ย. 2569",
+                date: "2026-06-03",
                 title: "CQF Alumni Perspectives: How AI Is Transforming Quant Careers",
                 copy: "เสวนาศิษย์เก่า CQF เกี่ยวกับการเริ่มต้นอาชีพสาย Quant การประยุกต์ใช้ AI ในงานจริง และทักษะที่มีแนวโน้มสำคัญต่อวิชาชีพในอนาคต",
                 href: "https://cqfinstitute.org/events/careers-talks/cqf-alumni-perspectives-how-ai-is-transforming-quant-careers/",
@@ -1328,6 +1336,7 @@ window.TQF_DB = {
               },
               {
                 kicker: "กิจกรรมที่ผ่านมา · 11 มี.ค. 2569",
+                date: "2026-03-11",
                 title: "Portfolio Management in Quant Finance Conference",
                 copy: "การประชุมออนไลน์ด้าน portfolio optimization, tail risk, systematic fixed income, option order books และการใช้ AI เพื่อสร้าง alpha",
                 href: "https://cqfinstitute.org/events/conferences/portfolio-management-in-quant-finance-conference/",
@@ -1335,6 +1344,7 @@ window.TQF_DB = {
               },
               {
                 kicker: "กิจกรรมที่ผ่านมา · 4 ก.พ. 2569",
+                date: "2026-02-04",
                 title: "Ace Your Quant Interview: How to Stand Out and Succeed",
                 copy: "Career Talk สำหรับเตรียมสัมภาษณ์งานสาย Quant ตั้งแต่โจทย์เชิงเทคนิค การสื่อสารกระบวนการคิด ไปจนถึงสิ่งที่นายจ้างชั้นนำมองหา",
                 href: "https://cqfinstitute.org/events/careers-talks/careers-talk-ace-your-quant-interview/",
@@ -1342,6 +1352,7 @@ window.TQF_DB = {
               },
               {
                 kicker: "Professional Qualification",
+                dateLabel: "ต่อเนื่อง",
                 title: "Certificate in Quantitative Finance",
                 copy: "หลักสูตรออนไลน์แบบ part-time ระยะเวลา 6 เดือน ครอบคลุม quantitative finance, risk, data science และ machine learning",
                 href: "https://www.cqf.com/about-cqf/program-structure/what-is-cqf",
@@ -1349,6 +1360,7 @@ window.TQF_DB = {
               },
               {
                 kicker: "Program Structure",
+                dateLabel: "ต่อเนื่อง",
                 title: "CQF Module Structure",
                 copy: "โครงสร้าง 6 โมดูลหลักและวิชาเลือกขั้นสูง ตั้งแต่พื้นฐานการเงินเชิงปริมาณจนถึง fixed income และ credit",
                 href: "https://www.cqf.com/about-cqf/program-structure/cqf-qualification",
@@ -1356,6 +1368,7 @@ window.TQF_DB = {
               },
               {
                 kicker: "Continuing Education",
+                dateLabel: "ต่อเนื่อง",
                 title: "CQF Lifelong Learning Library",
                 copy: "คลังบทเรียนและ masterclass สำหรับการพัฒนาความรู้ด้าน quant finance อย่างต่อเนื่องหลังสำเร็จหลักสูตร",
                 href: "https://www.cqf.com/about-cqf/program-structure/lifelong-learning",
@@ -1371,6 +1384,7 @@ window.TQF_DB = {
             items: [
               {
                 kicker: "มหาวิทยาลัย",
+                dateLabel: "ต่อเนื่อง",
                 title: "WorldQuant University MSc in Financial Engineering",
                 copy: "หลักสูตรระดับบัณฑิตศึกษาด้าน financial engineering ที่เชื่อมโยงการเงิน คณิตศาสตร์ และการประยุกต์ใช้ข้อมูล",
                 href: "https://www.wqu.edu/mscfe",
@@ -1378,6 +1392,7 @@ window.TQF_DB = {
               },
               {
                 kicker: "พันธมิตรการเรียนรู้",
+                dateLabel: "ต่อเนื่อง",
                 title: "GroundUp Academy",
                 copy: "กิจกรรมและการเรียนรู้ด้านการลงทุน การเงิน การวิเคราะห์ข้อมูล และการพัฒนาทักษะวิชาชีพ",
                 href: "https://www.facebook.com/profile.php?id=61569334229421",
@@ -1385,6 +1400,7 @@ window.TQF_DB = {
               },
               {
                 kicker: "ชุมชนนิสิตนักศึกษา",
+                dateLabel: "ต่อเนื่อง",
                 title: "Quant CU Workshops",
                 copy: "กิจกรรม เวิร์กช็อป และเส้นทางการเรียนรู้ quantitative finance สำหรับนิสิตนักศึกษาและผู้เริ่มต้น",
                 href: "https://www.instagram.com/quantcu/",
@@ -1416,6 +1432,7 @@ window.TQF_DB = {
             items: [
               {
                 kicker: "Learning Pathway",
+                dateLabel: "Ongoing",
                 title: "TQF Quant Pathway",
                 copy: "A structured path from mathematics, finance, and programming foundations to specialized quant topics.",
                 href: "quant-pathway.html",
@@ -1423,6 +1440,7 @@ window.TQF_DB = {
               },
               {
                 kicker: "Workshop",
+                date: "2025-10-25",
                 title: "Intro to Quant Workshop",
                 copy: "Portfolio optimization and options-pricing workshops with hands-on coding for university students.",
                 href: "https://www.instagram.com/p/DQE7gHeEs2r/",
@@ -1430,6 +1448,7 @@ window.TQF_DB = {
               },
               {
                 kicker: "Career Guidance",
+                date: "2026-09-30",
                 title: "Free Quant Career Guidance Session",
                 copy: "A career session covering quant roles, model development, and Monte Carlo simulation for derivatives.",
                 href: "https://www.facebook.com/quantcornerthailand",
@@ -1445,6 +1464,7 @@ window.TQF_DB = {
             items: [
               {
                 kicker: "Upcoming · 7 Oct 2026",
+                date: "2026-10-07",
                 title: "Optimizing Your Quant Finance Resume for Today’s Market",
                 copy: "An online careers talk with Rainy Gill on structuring a quant resume, presenting technical experience, and avoiding common application mistakes.",
                 href: "https://cqfinstitute.org/events/careers-talks/optimizing-your-quant-finance-resume-for-todays-market/",
@@ -1452,6 +1472,8 @@ window.TQF_DB = {
               },
               {
                 kicker: "Upcoming · 4-5 Nov 2026",
+                date: "2026-11-04",
+                dateLabel: "4-5 November 2026",
                 title: "Annual Quant Insights Conference",
                 copy: "CQF Institute’s annual online conference on developments in trading, portfolio theory, artificial intelligence, and quantitative finance.",
                 href: "https://cqfinstitute.org/events/conferences/annual-quant-insights-conference/",
@@ -1459,6 +1481,7 @@ window.TQF_DB = {
               },
               {
                 kicker: "Past event · 16 Sep 2026",
+                date: "2026-09-16",
                 title: "AI and Machine Learning in Quant Finance Conference",
                 copy: "A conference spanning deep learning, portfolio optimization, AI model risk, LLM interpretability, and quantum computing in quantitative finance.",
                 href: "https://cqfinstitute.org/events/conferences/ai-and-machine-learning-in-quant-finance/",
@@ -1466,6 +1489,7 @@ window.TQF_DB = {
               },
               {
                 kicker: "Past event · 3 Jun 2026",
+                date: "2026-06-03",
                 title: "CQF Alumni Perspectives: How AI Is Transforming Quant Careers",
                 copy: "CQF alumni discuss breaking into quant finance, practical AI applications, and the skills likely to shape quantitative careers.",
                 href: "https://cqfinstitute.org/events/careers-talks/cqf-alumni-perspectives-how-ai-is-transforming-quant-careers/",
@@ -1473,6 +1497,7 @@ window.TQF_DB = {
               },
               {
                 kicker: "Past event · 11 Mar 2026",
+                date: "2026-03-11",
                 title: "Portfolio Management in Quant Finance Conference",
                 copy: "An online conference on portfolio optimization, tail risk, systematic fixed income, option order books, and AI-driven alpha generation.",
                 href: "https://cqfinstitute.org/events/conferences/portfolio-management-in-quant-finance-conference/",
@@ -1480,6 +1505,7 @@ window.TQF_DB = {
               },
               {
                 kicker: "Past event · 4 Feb 2026",
+                date: "2026-02-04",
                 title: "Ace Your Quant Interview: How to Stand Out and Succeed",
                 copy: "A careers talk on technical interview preparation, communicating problem-solving skills, and what leading quant employers seek.",
                 href: "https://cqfinstitute.org/events/careers-talks/careers-talk-ace-your-quant-interview/",
@@ -1487,6 +1513,7 @@ window.TQF_DB = {
               },
               {
                 kicker: "Professional Qualification",
+                dateLabel: "Ongoing",
                 title: "Certificate in Quantitative Finance",
                 copy: "A six-month online, part-time program spanning quantitative finance, risk, data science, and machine learning.",
                 href: "https://www.cqf.com/about-cqf/program-structure/what-is-cqf",
@@ -1494,6 +1521,7 @@ window.TQF_DB = {
               },
               {
                 kicker: "Program Structure",
+                dateLabel: "Ongoing",
                 title: "CQF Module Structure",
                 copy: "Six core modules and advanced electives, from quantitative-finance foundations to fixed income and credit.",
                 href: "https://www.cqf.com/about-cqf/program-structure/cqf-qualification",
@@ -1501,6 +1529,7 @@ window.TQF_DB = {
               },
               {
                 kicker: "Continuing Education",
+                dateLabel: "Ongoing",
                 title: "CQF Lifelong Learning Library",
                 copy: "An ongoing library of lectures and masterclasses for continued development after completing the qualification.",
                 href: "https://www.cqf.com/about-cqf/program-structure/lifelong-learning",
@@ -1516,6 +1545,7 @@ window.TQF_DB = {
             items: [
               {
                 kicker: "University",
+                dateLabel: "Ongoing",
                 title: "WorldQuant University MSc in Financial Engineering",
                 copy: "A graduate program connecting finance, mathematics, and applied data methods in financial engineering.",
                 href: "https://www.wqu.edu/mscfe",
@@ -1523,6 +1553,7 @@ window.TQF_DB = {
               },
               {
                 kicker: "Learning Partner",
+                dateLabel: "Ongoing",
                 title: "GroundUp Academy",
                 copy: "Activities and learning in investing, finance, data analysis, and professional skill development.",
                 href: "https://www.facebook.com/profile.php?id=61569334229421",
@@ -1530,6 +1561,7 @@ window.TQF_DB = {
               },
               {
                 kicker: "University Community",
+                dateLabel: "Ongoing",
                 title: "Quant CU Workshops",
                 copy: "Quantitative-finance activities, workshops, and learning pathways for students and new learners.",
                 href: "https://www.instagram.com/quantcu/",
