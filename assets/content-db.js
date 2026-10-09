@@ -312,6 +312,45 @@ window.TQF_DB = {
   activities: {
     items: [
       {
+        date: "2026-10-31",
+        dateLabelTh: "31 ตุลาคม - 1 พฤศจิกายน 2569",
+        dateLabelEn: "31 October - 1 November 2026",
+        href: "https://www.efin.finance/events/better-trade/better-trade2026",
+        imageSrc:
+          "https://www.efin.finance/events/better-trade/better-trade2026/images/og-image.webp?v=3",
+        categoryTh: "มหกรรมการลงทุน",
+        categoryEn: "Investment Expo",
+        titleTh: "BetterTrade 2026: New World New Playbook",
+        titleEn: "BetterTrade 2026: New World New Playbook",
+        copyTh:
+          "มหกรรมการลงทุนสองวันจาก efin Group รวมเวทีสัมมนา เวิร์กช็อป มาสเตอร์คลาส และโซนประสบการณ์ ครอบคลุมตลาดทุน สินทรัพย์ดิจิทัล AI และการวางแผนการเงิน",
+        copyEn:
+          "A two-day investment expo by efin Group featuring conferences, workshops, master classes, and experience zones across capital markets, digital assets, AI, and financial planning.",
+        timeTh: "31 ต.ค. 9:00 - 18:30 น. · 1 พ.ย. 9:00 - 17:30 น.",
+        timeEn: "31 Oct, 9:00 AM - 6:30 PM · 1 Nov, 9:00 AM - 5:30 PM",
+        locationTh: "สามย่านมิตรทาวน์ ฮอลล์ ชั้น 5 กรุงเทพฯ",
+        locationEn: "Samyan Mitrtown Hall, 5th Floor, Bangkok",
+      },
+      {
+        date: "2026-10-10",
+        dateLabelTh: "10 ตุลาคม 2569",
+        dateLabelEn: "10 October 2026",
+        href: "https://quantfilab.github.io/pmarupanthorn/event/dift2026-2/",
+        imageSrc: "https://quantfilab.github.io/pmarupanthorn/event/dift2026-2/featured.jpg",
+        categoryTh: "ปาฐกถาพิเศษและการประชุมวิชาการ",
+        categoryEn: "Keynote and Academic Conference",
+        titleTh: "Quantitative Finance in the Age of Digital Innovation",
+        titleEn: "Quantitative Finance in the Age of Digital Innovation",
+        copyTh:
+          "ปาฐกถาพิเศษโดย ดร.พศิน มรุปัณฑ์ธร ในงาน DIFT 2026-2 ว่าด้วยบทบาทของแบบจำลองทางคณิตศาสตร์ ข้อมูล การประมวลผล AI และการตัดสินใจอย่างเป็นระบบต่อการเงินยุคดิจิทัล",
+        copyEn:
+          "A DIFT 2026-2 keynote by Dr. Pasin Marupanthorn on how mathematical modelling, data, computation, AI, and systematic decision methods are shaping digital finance.",
+        timeTh: "9:00 - 11:00 น.",
+        timeEn: "9:00 AM - 11:00 AM",
+        locationTh: "International College of Digital Innovation มหาวิทยาลัยเชียงใหม่",
+        locationEn: "International College of Digital Innovation, Chiang Mai University",
+      },
+      {
         date: "2026-09-30",
         href: "https://www.facebook.com/quantcornerthailand",
         imageSrc: "assets/activity-quant-career-2026.png",
