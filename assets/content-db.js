@@ -101,13 +101,11 @@ window.TQF_DB = {
       collaborators: {
         th: [
           { href: "collaborators.html#facebook", label: "เพจเฟซบุ๊ก" },
-          { href: "collaborators.html#institute", label: "สถาบัน" },
           { href: "collaborators.html#university", label: "มหาวิทยาลัย" },
           { href: "collaborators.html#company", label: "บริษัท" },
         ],
         en: [
           { href: "collaborators.html#facebook", label: "Facebook Pages" },
-          { href: "collaborators.html#institute", label: "Institute" },
           { href: "collaborators.html#university", label: "University" },
           { href: "collaborators.html#company", label: "Company" },
         ],
@@ -545,35 +543,6 @@ window.TQF_DB = {
           ],
         },
         {
-          key: "institute",
-          title: "สถาบัน",
-          description:
-            "สถาบันวิชาชีพและองค์กรด้านการรับรองความรู้ที่มีบทบาทต่อสายงาน quantitative finance และสาขาที่เกี่ยวข้อง",
-          items: [
-            {
-              name: "CQF",
-              href: "https://www.cqf.com/",
-              logoSrc: "assets/partner-cqf.svg",
-              copy:
-                "Certificate in Quantitative Finance เป็นหลักสูตรวิชาชีพด้าน quantitative finance ระดับสากล",
-            },
-            {
-              name: "CFA Institute",
-              href: "https://www.cfainstitute.org/",
-              logoSrc: "assets/partner-cfa.svg",
-              copy:
-                "องค์กรวิชาชีพด้านการลงทุน การเงิน และจริยธรรมวิชาชีพที่ได้รับการยอมรับในระดับนานาชาติ",
-            },
-            {
-              name: "Society of Actuaries",
-              href: "https://www.soa.org/",
-              logoSrc: "assets/partner-soa.svg",
-              copy:
-                "องค์กรวิชาชีพด้าน actuarial science ที่เกี่ยวข้องกับการวิเคราะห์ความเสี่ยงและแบบจำลองเชิงปริมาณ",
-            },
-          ],
-        },
-        {
           key: "university",
           title: "มหาวิทยาลัย",
           description:
@@ -686,35 +655,6 @@ window.TQF_DB = {
               logoSrc: "assets/partner-zerogreeks-facebook.jpg",
               copy:
                 "Educational content on derivatives, options, volatility, and financial risk management.",
-            },
-          ],
-        },
-        {
-          key: "institute",
-          title: "Institute",
-          description:
-            "Professional institutes and credentialing bodies relevant to quantitative finance, investment analysis, and adjacent technical disciplines.",
-          items: [
-            {
-              name: "CQF",
-              href: "https://www.cqf.com/",
-              logoSrc: "assets/partner-cqf.svg",
-              copy:
-                "The Certificate in Quantitative Finance is a professional qualification focused on quant finance and financial engineering.",
-            },
-            {
-              name: "CFA Institute",
-              href: "https://www.cfainstitute.org/",
-              logoSrc: "assets/partner-cfa.svg",
-              copy:
-                "A global professional body for investment practitioners, ethics, and finance education.",
-            },
-            {
-              name: "Society of Actuaries",
-              href: "https://www.soa.org/",
-              logoSrc: "assets/partner-soa.svg",
-              copy:
-                "A leading actuarial professional organization covering risk, modeling, and quantitative decision frameworks.",
             },
           ],
         },

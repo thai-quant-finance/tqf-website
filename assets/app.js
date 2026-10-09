@@ -670,7 +670,7 @@
               kicker: "Network",
               title: "Collaborators",
               copy:
-                "A directory of relevant institutes, universities, companies, and public channels across the quantitative finance ecosystem.",
+                "A directory of relevant universities, companies, and public channels across the quantitative finance ecosystem.",
             },
             {
               href: "academic.html",
@@ -821,7 +821,7 @@
             "รวบรวมหน่วยงานและชุมชนที่เกี่ยวข้องกับระบบนิเวศของ quantitative finance เพื่อใช้เป็นจุดเชื่อมโยงด้านการเรียนรู้ วิชาชีพ และอุตสาหกรรม",
           panelTitle: "โครงสร้างเครือข่าย",
           panelBody:
-            "หน้าเว็บนี้จัดกลุ่มเครือข่ายออกเป็นเพจเฟซบุ๊ก สถาบัน มหาวิทยาลัย และบริษัท เพื่อให้ค้นหาได้สะดวก",
+            "หน้าเว็บนี้จัดกลุ่มเครือข่ายออกเป็นเพจเฟซบุ๊ก มหาวิทยาลัย และบริษัท เพื่อให้ค้นหาได้สะดวก",
           imageAlt: "ภาพประกอบเครือข่ายความร่วมมือของสมาคม",
           groups: collaboratorGroups.th,
         },
@@ -833,7 +833,7 @@
             "A structured directory of public organizations and communities relevant to the quantitative finance ecosystem.",
           panelTitle: "Network structure",
           panelBody:
-            "This page groups the network into Facebook Pages, Institute, University, and Company sections for easier access.",
+            "This page groups the network into Facebook Pages, University, and Company sections for easier access.",
           imageAlt: "Collaborator network visual",
           groups: collaboratorGroups.en,
         },
@@ -1738,7 +1738,7 @@
         meta: [
           [state.lang === "th" ? "หมวดเครือข่าย" : "Network categories", pad(page.groups.length)],
           [state.lang === "th" ? "รายการทั้งหมด" : "Listed entries", pad(page.groups.reduce((sum, group) => sum + group.items.length, 0))],
-          [state.lang === "th" ? "การจัดหมวด" : "Sections", state.lang === "th" ? "เพจเฟซบุ๊ก / สถาบัน / มหาวิทยาลัย / บริษัท" : "Facebook / Institute / University / Company"],
+          [state.lang === "th" ? "การจัดหมวด" : "Sections", state.lang === "th" ? "เพจเฟซบุ๊ก / มหาวิทยาลัย / บริษัท" : "Facebook / University / Company"],
         ],
       })}
 
